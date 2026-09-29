@@ -12,8 +12,11 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 movementDirection;
 
     [Header("Visuals")]
-    [SerializeField] private Transform playerMesh;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private Animator animator;
+
+    private const string ANIM_PLAYER_IS_WALKING = "_isWalking";
+    private const string ANIM_PLAYER_WALKING_SPEED = "_walkingSpeed";
 
     private void Awake()
     {
@@ -26,6 +29,8 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         PerformPlayerMeshRotationUpdate();
+
+        PerformPlayerAnimationUpdate();
     }
 
     private void PerformPlayerMeshRotationUpdate()
@@ -33,7 +38,13 @@ public class PlayerMovement : NetworkBehaviour
         if (movementDirection == Vector3.zero)
             return;
 
-        playerMesh.rotation = Quaternion.RotateTowards(playerMesh.rotation, Quaternion.LookRotation(movementDirection, Vector3.up), Time.deltaTime * 360 * rotationSpeed);
+        rb.rotation = Quaternion.RotateTowards(rb.rotation, Quaternion.LookRotation(movementDirection, Vector3.up), Time.deltaTime * 360 * rotationSpeed);
+    }
+
+    private void PerformPlayerAnimationUpdate()
+    {
+        animator.SetBool(ANIM_PLAYER_IS_WALKING, movementDirection != Vector3.zero);
+        animator.SetFloat(ANIM_PLAYER_WALKING_SPEED, rb.linearVelocity.magnitude / movementSpeed);
     }
 
     private void FixedUpdate()
