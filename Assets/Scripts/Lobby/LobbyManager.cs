@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
@@ -6,6 +5,8 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using System.Collections.Generic;
+using Unity.Netcode;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -104,9 +105,7 @@ public class LobbyManager : MonoBehaviour
                 // If we got kicked/disconnected
                 if(lobby.Players == null)
                 {
-                    joinedLobby = null;
-
-                    OnLobbyLeft.Invoke();
+                    LeaveLobbyCleanup();
                     return;
                 }
 
@@ -144,10 +143,17 @@ public class LobbyManager : MonoBehaviour
             {
                 IsPrivate = isPrivate,
                 Player = GetPlayerData(),
+
+                Data = new Dictionary<string, DataObject>()
+                {
+                    { LOBBY_RELAY_CODE_KEY, new DataObject(DataObject.VisibilityOptions.Member, string.Empty) }
+                }
             });
 
             hostLobby = lobby;
             OnLobbyCreated?.Invoke(lobby);
+
+            StartRelayConnectionInLobby();
 
             joinedLobby = lobby;
             OnLobbyJoined?.Invoke(lobby);
@@ -184,6 +190,8 @@ public class LobbyManager : MonoBehaviour
             });
 
             joinedLobby = lobby;
+            JoinRelayConnectionInLobby();
+
             OnLobbyJoined?.Invoke(lobby);
         }
         catch (LobbyServiceException e)
@@ -201,6 +209,8 @@ public class LobbyManager : MonoBehaviour
             });
 
             joinedLobby = lobby;
+            JoinRelayConnectionInLobby();
+
             OnLobbyJoined?.Invoke(lobby);
         }
         catch (LobbyServiceException e)
@@ -219,6 +229,8 @@ public class LobbyManager : MonoBehaviour
             });
 
             joinedLobby = lobby;
+            JoinRelayConnectionInLobby();
+
             OnLobbyJoined?.Invoke(lobby);
         }
         catch (LobbyServiceException e)
@@ -250,7 +262,7 @@ public class LobbyManager : MonoBehaviour
         {
             await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
 
-            OnLobbyLeft?.Invoke();
+            LeaveLobbyCleanup();
         }
         catch (LobbyServiceException e)
         {
@@ -279,7 +291,57 @@ public class LobbyManager : MonoBehaviour
         {
             await LobbyService.Instance.DeleteLobbyAsync(hostLobby.Id);
 
-            OnLobbyLeft?.Invoke();
+            LeaveLobbyCleanup();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    private void LeaveLobbyCleanup()
+    {
+        joinedLobby = null;
+        NetworkManager.Singleton.Shutdown();
+        OnLobbyLeft?.Invoke();
+    }
+
+    public const string LOBBY_RELAY_CODE_KEY = "_relayCode"; 
+    public async void StartRelayConnectionInLobby()
+    {
+        try
+        {
+            Debug.Log("Starting connection");
+
+            string relayCode = await RelayManager.CreateRelay();
+
+            UpdateLobby(new UpdateLobbyOptions()
+            {
+                Data = new Dictionary<string, DataObject>()
+                {
+                    { LOBBY_RELAY_CODE_KEY, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                }
+            });
+        }
+        catch(LobbyServiceException e) 
+        {
+            Debug.Log(e);
+        }
+    }
+
+    public void JoinRelayConnectionInLobby()
+    {
+        if (joinedLobby == null)
+            return;
+
+        try
+        {
+            string relayCode = joinedLobby.Data[LOBBY_RELAY_CODE_KEY].Value;
+
+            if (string.IsNullOrEmpty(relayCode))
+                return;
+
+            RelayManager.JoinRelay(relayCode);
         }
         catch (LobbyServiceException e)
         {
