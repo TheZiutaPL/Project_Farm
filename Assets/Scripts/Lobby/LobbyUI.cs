@@ -1,6 +1,8 @@
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyUI : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyPrivateText;
     [SerializeField] private TextMeshProUGUI lobbyCodeText;
     [SerializeField] private TextMeshProUGUI joinedPlayersText;
+
+    private const string LOADED_SCENE_NAME = "GameScene";
 
     private void Start()
     {
@@ -84,7 +88,10 @@ public class LobbyUI : MonoBehaviour
 
     public void StartGame()
     {
-        // TODO
-        Debug.Log("Start Game");
+        if (!LobbyManager.Instance.IsLobbyHost)
+            return;
+
+        Debug.Log("Starting game...");
+        NetworkManager.Singleton.SceneManager.LoadScene(LOADED_SCENE_NAME, LoadSceneMode.Single);
     }
 }
