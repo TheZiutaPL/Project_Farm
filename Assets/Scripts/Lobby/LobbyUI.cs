@@ -38,7 +38,7 @@ public class LobbyUI : MonoBehaviour
         if (!LobbyManager.IsSignedIn)
             return;
 
-        OnLobbyUpdate(LobbyManager.Instance.GetJoinedLobby());
+        OnLobbyUpdate(LobbyManager.Instance.JoinedLobby);
     }
 
     private void OnDisable()

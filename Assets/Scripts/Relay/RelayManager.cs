@@ -35,7 +35,7 @@ public class RelayManager : MonoBehaviour
         return null;
     }
 
-    public static async void JoinRelay(string joinCode)
+    public static async Task JoinRelay(string joinCode)
     {
         try
         {

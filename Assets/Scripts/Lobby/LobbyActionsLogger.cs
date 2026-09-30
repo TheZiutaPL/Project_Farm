@@ -6,19 +6,19 @@ public class LobbyActionsLogger : MonoBehaviour
 {
     private void OnEnable()
     {
-        LobbyManager.OnLobbyCreated += OnLobbyCreated;
         LobbyManager.OnLobbyJoined += OnLobbyJoined;
 
         LobbyManager.OnLobbyLeft += OnLobbyLeft;
+        LobbyManager.OnLobbyKicked += OnLobbyKicked;
         LobbyManager.OnLobbyUpdated += OnLobbyUpdated;
     }
 
     private void OnDisable()
     {
-        LobbyManager.OnLobbyCreated -= OnLobbyCreated;
         LobbyManager.OnLobbyJoined -= OnLobbyJoined;
 
         LobbyManager.OnLobbyLeft -= OnLobbyLeft;
+        LobbyManager.OnLobbyKicked -= OnLobbyKicked;
         LobbyManager.OnLobbyUpdated -= OnLobbyUpdated;
     }
 
@@ -39,6 +39,11 @@ public class LobbyActionsLogger : MonoBehaviour
     }
 
     private void OnLobbyLeft()
+    {
+        Debug.Log($"You left a lobby.");
+    }
+
+    private void OnLobbyKicked()
     {
         Debug.Log($"You left a lobby.");
     }
