@@ -6,17 +6,17 @@ namespace InventorySystem
 {
     public class Inventory : NetworkBehaviour
     {
-        [SerializeField] private int inventorySize = 5;
+        [field: SerializeField] public int InventorySize { get; private set; } = 5;
         private NetworkList<int> inventory = new NetworkList<int>
             (
             new int[0],
             NetworkVariableReadPermission.Everyone,
-            NetworkVariableWritePermission.Owner
+            NetworkVariableWritePermission.Server
             );
 
         public InventoryItemSO GetItemAtSlot(int slotIndex)
         {
-            if (slotIndex < 0 || slotIndex >= inventorySize)
+            if (slotIndex < 0 || slotIndex >= InventorySize)
             {
                 Debug.LogError("You're trying to access unexisting inventory slot!");
                 return null;
@@ -96,7 +96,7 @@ namespace InventorySystem
                 return true;
             }
 
-            if(inventory.Count < inventorySize)
+            if(inventory.Count < InventorySize)
             {
                 inventory.Add(itemID);
                 return true;

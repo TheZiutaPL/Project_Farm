@@ -14,14 +14,14 @@ namespace InventorySystem
             // TODO pickup
             if (item != null)
             {
-                ItemPickupServerRpc();
+                ItemPickupRpc();
             }
             else
                 NetworkObject.Despawn();
         }
 
-        [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
-        public void ItemPickupServerRpc(ServerRpcParams rpcParams = default)
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        public void ItemPickupRpc(RpcParams rpcParams = default)
         {
             if (item != null && NetworkManager.Singleton.ConnectedClients.TryGetValue(rpcParams.Receive.SenderClientId, out NetworkClient networkClient))
             {

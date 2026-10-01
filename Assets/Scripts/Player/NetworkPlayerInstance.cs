@@ -9,7 +9,8 @@ public class NetworkPlayerInstance : NetworkBehaviour
     public static NetworkPlayerInstance OwnerInstance { get; private set; }
 
     public static bool IsOwnerAssigned => OwnerInstance != null;
-    public static Action OnOwnerInstanceAssigned;
+    public static Action<NetworkPlayerInstance> OnOwnerInstanceAssigned;
+    public static Action<NetworkPlayerInstance> OnOwnerInstanceUnassigned;
 
     [field: SerializeField] public Interactor Interactor { get; private set; }
     [field: SerializeField] public Inventory Inventory { get; private set; } 
@@ -30,7 +31,7 @@ public class NetworkPlayerInstance : NetworkBehaviour
         }
 
         OwnerInstance = this;
-        OnOwnerInstanceAssigned?.Invoke();
+        OnOwnerInstanceAssigned?.Invoke(this);
     }
 
     public override void OnNetworkDespawn()
@@ -38,9 +39,9 @@ public class NetworkPlayerInstance : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        if (!IsOwnerAssigned)
+        if (!IsOwnerAssigned || OwnerInstance != this)
             return;
 
-        OwnerInstance = null;
+        OnOwnerInstanceUnassigned?.Invoke(this);
     }
 }
