@@ -1726,9 +1726,9 @@ RectTransform:
   - {fileID: 1000387921}
   m_Father: {fileID: 1494000361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 146, y: -46}
   m_SizeDelta: {x: 260, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1103355856
@@ -1847,9 +1847,9 @@ RectTransform:
   - {fileID: 180503229}
   m_Father: {fileID: 1494000361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 146, y: -122}
   m_SizeDelta: {x: 260, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1143596758
@@ -2170,7 +2170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1494000361
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2190,7 +2190,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -16, y: -15}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 292, y: 168}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1494000362
 MonoBehaviour:
@@ -2958,14 +2958,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4983269537624369296, guid: 36567bff2aa811240a8d1e8845f0254c, type: 3}
-      propertyPath: m_ProtocolType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4983269537624369296, guid: 36567bff2aa811240a8d1e8845f0254c, type: 3}
-      propertyPath: m_UseEncryption
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8485342611188355121, guid: 36567bff2aa811240a8d1e8845f0254c, type: 3}
       propertyPath: m_Name
       value: --=NetworkManager=--
@@ -3092,10 +3084,6 @@ PrefabInstance:
     - target: {fileID: 4732633381845630119, guid: d0e736e0abeaecb4d86c449917763e4f, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2318502298
-      objectReference: {fileID: 0}
-    - target: {fileID: 6116292165378576976, guid: d0e736e0abeaecb4d86c449917763e4f, type: 3}
-      propertyPath: spawnPlayersSeparately
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7663121695679929481, guid: d0e736e0abeaecb4d86c449917763e4f, type: 3}
       propertyPath: m_LocalPosition.x
