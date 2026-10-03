@@ -12,6 +12,7 @@ public class NetworkPlayerInstance : NetworkBehaviour
     public static Action<NetworkPlayerInstance> OnOwnerInstanceAssigned;
     public static Action<NetworkPlayerInstance> OnOwnerInstanceUnassigned;
 
+    [field: SerializeField] public PlayerInputs PlayerInputs { get; private set; }
     [field: SerializeField] public Interactor Interactor { get; private set; }
     [field: SerializeField] public Inventory Inventory { get; private set; } 
 

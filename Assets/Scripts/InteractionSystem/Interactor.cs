@@ -41,6 +41,22 @@ namespace InteractionSystem
             targetable.OnTarget();
         }
 
+        protected override void OnNetworkPostSpawn()
+        {
+            if (!IsOwner)
+                return;
+
+            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Interact.performed += Interact;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (!IsOwner)
+                return;
+
+            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Interact.performed -= Interact;
+        }
+
         private void Update()
         {
             if (!IsOwner)

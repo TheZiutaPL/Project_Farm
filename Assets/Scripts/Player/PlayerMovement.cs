@@ -23,6 +23,24 @@ public class PlayerMovement : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    protected override void OnNetworkPostSpawn()
+    {
+        if (!IsOwner)
+            return;
+
+        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.performed += OnMoveInput_Performed;
+        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.canceled += OnMoveInput_Canceled;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (!IsOwner)
+            return;
+
+        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.performed -= OnMoveInput_Performed;
+        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.canceled -= OnMoveInput_Canceled;
+    }
+
     private void Update()
     {
         if (!IsOwner)
@@ -76,5 +94,10 @@ public class PlayerMovement : NetworkBehaviour
         Vector2 input = ctx.ReadValue<Vector2>();
 
         movementDirection = new Vector3(input.x, 0, input.y).normalized;
+    }
+
+    public void OnMoveInput_Canceled(InputAction.CallbackContext ctx)
+    {
+        movementDirection = Vector3.zero;
     }
 }

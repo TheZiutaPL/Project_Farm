@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 964403774661858338}
   - component: {fileID: 8844623256666700542}
   - component: {fileID: 1324552362857205112}
-  - component: {fileID: 4079671091578986377}
+  - component: {fileID: 7837289110620013579}
   - component: {fileID: 3934771545083581521}
   - component: {fileID: 6720043480466830186}
   - component: {fileID: -1207900761158698671}
@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3789662663
+  GlobalObjectIdHash: 3476430019
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -83,9 +83,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  <PlayerInputs>k__BackingField: {fileID: 7837289110620013579}
   <Interactor>k__BackingField: {fileID: -1207900761158698671}
   <Inventory>k__BackingField: {fileID: 1988212836305317938}
---- !u!114 &4079671091578986377
+--- !u!114 &7837289110620013579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,59 +95,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2664152673668474812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: ddef89ed5bd297d4aac4698aadee33f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: d1f5cac937617a243800d17d5c1dd266, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3934771545083581521}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: OnMoveInput_Performed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -1207900761158698671}
-        m_TargetAssemblyTypeName: InteractionSystem.Interactor, Assembly-CSharp
-        m_MethodName: Interact
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: d1c55545-e718-4662-8668-de31bb3b31d3
-    m_ActionName: 'Player/Interact[/Keyboard/e]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &3934771545083581521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  inventorySize: 5
+  <InventorySize>k__BackingField: 5
 --- !u!114 &1168258935226066588
 MonoBehaviour:
   m_ObjectHideFlags: 0
