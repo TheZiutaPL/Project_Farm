@@ -34,22 +34,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SelectPreviousItem",
-                    "type": "Button",
-                    "id": "816efafd-5b77-4f3d-b430-df45dae95e22",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SelectNextItem",
-                    "type": "Button",
+                    "name": "SlotSelection",
+                    "type": "Value",
                     "id": "67da36fd-9aa3-4630-9f69-f157f733e673",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "PointerPosition",
@@ -229,28 +220,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0a6eedce-65ad-407f-9267-3183f6a1a048",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "SelectPreviousItem",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "30c01471-2615-425d-96da-dc3df9a88541",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "SelectNextItem",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "89a38f8f-f0bc-4bd1-b9ad-95ff48069f90",
                     "path": "<Pointer>/position",
                     "interactions": "",
@@ -259,6 +228,39 @@
                     "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "d6a9d287-cff8-4863-8e43-1fe82f8ab9ff",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SlotSelection",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "5369d1e2-fc32-42ce-991e-0bd779b39651",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "SlotSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "9086085c-ef64-4eec-b32b-98c72c3f72cc",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "SlotSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

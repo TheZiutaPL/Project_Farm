@@ -120,22 +120,13 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SelectPreviousItem"",
-                    ""type"": ""Button"",
-                    ""id"": ""816efafd-5b77-4f3d-b430-df45dae95e22"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SelectNextItem"",
-                    ""type"": ""Button"",
+                    ""name"": ""SlotSelection"",
+                    ""type"": ""Value"",
                     ""id"": ""67da36fd-9aa3-4630-9f69-f157f733e673"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""PointerPosition"",
@@ -315,28 +306,6 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0a6eedce-65ad-407f-9267-3183f6a1a048"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""SelectPreviousItem"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""30c01471-2615-425d-96da-dc3df9a88541"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""SelectNextItem"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""89a38f8f-f0bc-4bd1-b9ad-95ff48069f90"",
                     ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
@@ -345,6 +314,39 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""action"": ""PointerPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d6a9d287-cff8-4863-8e43-1fe82f8ab9ff"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SlotSelection"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5369d1e2-fc32-42ce-991e-0bd779b39651"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SlotSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""9086085c-ef64-4eec-b32b-98c72c3f72cc"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SlotSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -417,8 +419,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
-        m_Player_SelectPreviousItem = m_Player.FindAction("SelectPreviousItem", throwIfNotFound: true);
-        m_Player_SelectNextItem = m_Player.FindAction("SelectNextItem", throwIfNotFound: true);
+        m_Player_SlotSelection = m_Player.FindAction("SlotSelection", throwIfNotFound: true);
         m_Player_PointerPosition = m_Player.FindAction("PointerPosition", throwIfNotFound: true);
     }
 
@@ -503,8 +504,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_UseItem;
-    private readonly InputAction m_Player_SelectPreviousItem;
-    private readonly InputAction m_Player_SelectNextItem;
+    private readonly InputAction m_Player_SlotSelection;
     private readonly InputAction m_Player_PointerPosition;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -530,13 +530,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         /// <summary>
-        /// Provides access to the underlying input action "Player/SelectPreviousItem".
+        /// Provides access to the underlying input action "Player/SlotSelection".
         /// </summary>
-        public InputAction @SelectPreviousItem => m_Wrapper.m_Player_SelectPreviousItem;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/SelectNextItem".
-        /// </summary>
-        public InputAction @SelectNextItem => m_Wrapper.m_Player_SelectNextItem;
+        public InputAction @SlotSelection => m_Wrapper.m_Player_SlotSelection;
         /// <summary>
         /// Provides access to the underlying input action "Player/PointerPosition".
         /// </summary>
@@ -576,12 +572,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @UseItem.started += instance.OnUseItem;
             @UseItem.performed += instance.OnUseItem;
             @UseItem.canceled += instance.OnUseItem;
-            @SelectPreviousItem.started += instance.OnSelectPreviousItem;
-            @SelectPreviousItem.performed += instance.OnSelectPreviousItem;
-            @SelectPreviousItem.canceled += instance.OnSelectPreviousItem;
-            @SelectNextItem.started += instance.OnSelectNextItem;
-            @SelectNextItem.performed += instance.OnSelectNextItem;
-            @SelectNextItem.canceled += instance.OnSelectNextItem;
+            @SlotSelection.started += instance.OnSlotSelection;
+            @SlotSelection.performed += instance.OnSlotSelection;
+            @SlotSelection.canceled += instance.OnSlotSelection;
             @PointerPosition.started += instance.OnPointerPosition;
             @PointerPosition.performed += instance.OnPointerPosition;
             @PointerPosition.canceled += instance.OnPointerPosition;
@@ -605,12 +598,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @UseItem.started -= instance.OnUseItem;
             @UseItem.performed -= instance.OnUseItem;
             @UseItem.canceled -= instance.OnUseItem;
-            @SelectPreviousItem.started -= instance.OnSelectPreviousItem;
-            @SelectPreviousItem.performed -= instance.OnSelectPreviousItem;
-            @SelectPreviousItem.canceled -= instance.OnSelectPreviousItem;
-            @SelectNextItem.started -= instance.OnSelectNextItem;
-            @SelectNextItem.performed -= instance.OnSelectNextItem;
-            @SelectNextItem.canceled -= instance.OnSelectNextItem;
+            @SlotSelection.started -= instance.OnSlotSelection;
+            @SlotSelection.performed -= instance.OnSlotSelection;
+            @SlotSelection.canceled -= instance.OnSlotSelection;
             @PointerPosition.started -= instance.OnPointerPosition;
             @PointerPosition.performed -= instance.OnPointerPosition;
             @PointerPosition.canceled -= instance.OnPointerPosition;
@@ -741,19 +731,12 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUseItem(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "SelectPreviousItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SlotSelection" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSelectPreviousItem(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "SelectNextItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSelectNextItem(InputAction.CallbackContext context);
+        void OnSlotSelection(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "PointerPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

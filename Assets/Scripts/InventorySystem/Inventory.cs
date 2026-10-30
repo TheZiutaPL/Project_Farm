@@ -40,7 +40,7 @@ namespace InventorySystem
         
         public void ChangeSelectedSlotIndex(int newSelectedSlotIndex)
         {
-            newSelectedSlotIndex = newSelectedSlotIndex % InventorySize;
+            newSelectedSlotIndex = (InventorySize + newSelectedSlotIndex) % InventorySize;
 
             SelectedSlotIndex = newSelectedSlotIndex;
             OnSelectedSlotIndexChanged?.Invoke(SelectedSlotIndex);
@@ -52,21 +52,24 @@ namespace InventorySystem
         {
             inventory.OnListChanged += OnInventoryChanged;
 
-            if(IsOwner)
+            if (IsOwner)
+            {
                 PlayerInputs.Instance.Inputs.Player.UseItem.performed += UseSelectedItem;
+
+                PlayerInputs.Instance.Inputs.Player.SlotSelection.performed += ChangeSelectedSlot;
+            }
         }
 
         public override void OnNetworkDespawn()
         {
             inventory.OnListChanged -= OnInventoryChanged;
 
-            if(IsOwner)
+            if (IsOwner)
+            {
                 PlayerInputs.Instance.Inputs.Player.UseItem.performed -= UseSelectedItem;
-        }
 
-        private void SubscribeToPlayerInputs()
-        {
-
+                PlayerInputs.Instance.Inputs.Player.SlotSelection.performed -= ChangeSelectedSlot;
+            }
         }
 
         #region Inventory Management
@@ -154,6 +157,22 @@ namespace InventorySystem
             return false;
         }
         #endregion
+
+        private void ChangeSelectedSlot(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            float axis = ctx.ReadValue<float>();
+
+            if (axis == 0)
+                return;
+
+            if (axis > 0)
+                MoveSelectedSlotIndexToLeft();
+            else
+                MoveSelectedSlotIndexToRight();
+        }
 
         private void UseSelectedItem(InputAction.CallbackContext ctx)
         {
