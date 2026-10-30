@@ -1,5 +1,6 @@
 using InteractionSystem;
 using InventorySystem;
+using RuntimeGrid;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -13,8 +14,10 @@ public class NetworkPlayerInstance : NetworkBehaviour
     public static Action<NetworkPlayerInstance> OnOwnerInstanceUnassigned;
 
     [field: SerializeField] public PlayerInputs PlayerInputs { get; private set; }
+    [field: SerializeField] public PlayerCameraHandler PlayerCameraHandler { get; private set; }
     [field: SerializeField] public Interactor Interactor { get; private set; }
-    [field: SerializeField] public Inventory Inventory { get; private set; } 
+    [field: SerializeField] public Inventory Inventory { get; private set; }
+    [field: SerializeField] public RuntimeGridInteractor GridInteractor { get; private set; }
 
     public override void OnNetworkSpawn()
     {

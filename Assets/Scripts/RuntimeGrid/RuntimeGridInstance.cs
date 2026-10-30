@@ -7,17 +7,32 @@ namespace RuntimeGrid
 {
     public class RuntimeGridInstance : MonoBehaviour
     {
+        public static RuntimeGridInstance Instance;
+
         [SerializeField] private Grid grid;
         [SerializeField] private Vector2Int[] eligibleCells = new Vector2Int[0];
 
         private Dictionary<Vector2Int, RuntimeCell> gridCells = new Dictionary<Vector2Int, RuntimeCell>();
+
+        private Plane gridPlane;
+        public Plane GetGridPlane() => gridPlane;
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+
+            gridPlane = new Plane(Vector3.up, grid.transform.position.y);
+        }
 
         private void Start()
         {
             gridCells = eligibleCells.ToDictionary(x => x, x => new RuntimeCell());
         }
 
-        public Vector2Int WorldToCellPosition(Vector3 worldPosition) => (Vector2Int)grid.WorldToCell(worldPosition);
+        public Vector2Int WorldToCellPosition(Vector3 worldPosition) => (Vector2Int)grid.WorldToCell(worldPosition + grid.cellSize / 2);
         public Vector3 CellToWorldPosition(Vector2Int cellPosition) => grid.CellToWorld((Vector3Int)cellPosition);
 
         public RuntimeCell GetRuntimeCell(Vector3 worldPosition)

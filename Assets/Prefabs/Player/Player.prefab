@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8844623256666700542}
   - component: {fileID: 1324552362857205112}
   - component: {fileID: 7837289110620013579}
+  - component: {fileID: 1659193875070422088}
   - component: {fileID: 3934771545083581521}
   - component: {fileID: 6720043480466830186}
   - component: {fileID: -1207900761158698671}
@@ -55,7 +56,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3476430019
+  GlobalObjectIdHash: 3789662663
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -84,8 +85,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <PlayerInputs>k__BackingField: {fileID: 7837289110620013579}
+  <PlayerCameraHandler>k__BackingField: {fileID: 6720043480466830186}
   <Interactor>k__BackingField: {fileID: -1207900761158698671}
   <Inventory>k__BackingField: {fileID: 1988212836305317938}
+  <GridInteractor>k__BackingField: {fileID: 1659193875070422088}
 --- !u!114 &7837289110620013579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +102,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &1659193875070422088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2664152673668474812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f234bc0edeee124449097970e3a402cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  selectedCell:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: {x: 0, y: 0}
+  selectionObjectPrefab: {fileID: 2146859695358864552, guid: fc4e3cc2e06d3a04b81b96af66ce4a27, type: 3}
 --- !u!114 &3934771545083581521
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,5 +7,10 @@ namespace RuntimeGrid
     {
         [SerializeField] private GameObject runtimeCellObject;
         public bool IsEmpty => runtimeCellObject == null;
+
+        public void SetCellObject(GameObject cellObject)
+        {
+            runtimeCellObject = cellObject;
+        }
     }
 }

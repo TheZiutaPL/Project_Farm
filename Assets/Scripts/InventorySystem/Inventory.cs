@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace InventorySystem
 {
@@ -33,9 +34,24 @@ namespace InventorySystem
         public Action<InventoryItemSO> OnItemAdded;
         public Action<InventoryItemSO> OnItemRemoved;
 
+        public int SelectedSlotIndex { get; private set; }
+        public Action<int> OnSelectedSlotIndexChanged;
+        
+        public void ChangeSelectedSlotIndex(int newSelectedSlotIndex)
+        {
+            newSelectedSlotIndex = newSelectedSlotIndex % InventorySize;
+
+            SelectedSlotIndex = newSelectedSlotIndex;
+            OnSelectedSlotIndexChanged?.Invoke(SelectedSlotIndex);
+        }
+        public void MoveSelectedSlotIndexToLeft() => ChangeSelectedSlotIndex(SelectedSlotIndex - 1);
+        public void MoveSelectedSlotIndexToRight() => ChangeSelectedSlotIndex(SelectedSlotIndex + 1);
+
         public override void OnNetworkSpawn()
         {
             inventory.OnListChanged += OnInventoryChanged;
+
+            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.UseItem.performed += UseSelectedItem;
         }
 
         public override void OnNetworkDespawn()
@@ -43,6 +59,7 @@ namespace InventorySystem
             inventory.OnListChanged -= OnInventoryChanged;
         }
 
+        #region Inventory Management
         private void OnInventoryChanged(NetworkListEvent<int> changeEvent)
         {
             switch (changeEvent.Type)
@@ -124,6 +141,24 @@ namespace InventorySystem
             }
 
             return false;
+        }
+        #endregion
+
+        private void UseSelectedItem(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            if (!IsOwner)
+                return;
+
+            InventoryItemSO item = GetItemAtSlot(SelectedSlotIndex);
+            if (item == null)
+                return;
+
+            Vector2Int cellPosition = NetworkPlayerInstance.OwnerInstance.GridInteractor.selectedCell.Value;
+
+            item.UseItem(cellPosition);
         }
     }
 }

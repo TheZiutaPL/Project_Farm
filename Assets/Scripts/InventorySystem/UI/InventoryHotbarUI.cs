@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace InventorySystem.UI
 {
     public class InventoryHotbarUI : MonoBehaviour
     {
+        [SerializeField] private ToggleGroup slotToggleGroup;
         [SerializeField] private InventorySlotUI inventorySlotPrefab;
         [SerializeField] private Transform inventorySlotContainer;
         private List<InventorySlotUI> slots = new List<InventorySlotUI>();
@@ -16,7 +18,10 @@ namespace InventorySystem.UI
             NetworkPlayerInstance.OnOwnerInstanceUnassigned += OnOwnerInstanceUnassigned;
 
             if (NetworkPlayerInstance.IsOwnerAssigned)
+            {
+                OnSelectedSlotChanged(NetworkPlayerInstance.OwnerInstance.Inventory.SelectedSlotIndex);
                 ForceInventoryUpdate(NetworkPlayerInstance.OwnerInstance.Inventory);
+            }
         }
 
         private void OnDisable()
@@ -32,6 +37,7 @@ namespace InventorySystem.UI
                 return;
 
             instance.Inventory.OnInventorySlotChange += OnInventorySlotChanged;
+            instance.Inventory.OnSelectedSlotIndexChanged += OnSelectedSlotChanged;
             instance.Inventory.OnInventoryUpdate += ForceInventoryUpdate;
 
             ForceInventoryUpdate(instance.Inventory);
@@ -43,12 +49,19 @@ namespace InventorySystem.UI
                 return;
 
             instance.Inventory.OnInventorySlotChange -= OnInventorySlotChanged;
+            instance.Inventory.OnSelectedSlotIndexChanged -= OnSelectedSlotChanged;
             instance.Inventory.OnInventoryUpdate -= ForceInventoryUpdate;
         }
 
         private void OnInventorySlotChanged((int changedSlot, InventoryItemSO newItem) change)
         {
             slots[change.changedSlot].SetItem(change.newItem);
+        }
+
+        private void OnSelectedSlotChanged(int newSelectedIndex)
+        {
+            for (int i = 0; i < slots.Count; i++)
+                slots[i].SetSelected(slots[i].SlotIndex == newSelectedIndex);
         }
 
         private void ForceInventoryUpdate(Inventory inventory)
@@ -68,7 +81,13 @@ namespace InventorySystem.UI
             {
                 int missing = newSize - slots.Count;
                 for (int i = 0; i < missing; i++)
-                    slots.Add(Instantiate(inventorySlotPrefab, inventorySlotContainer));
+                {
+                    InventorySlotUI slotUI = Instantiate(inventorySlotPrefab, inventorySlotContainer);
+
+                    slotUI.SetupSlot(slots.Count, slotToggleGroup);
+
+                    slots.Add(slotUI);
+                }
             }
             else
             {

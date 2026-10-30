@@ -5,6 +5,7 @@ public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private Camera playerCameraPrefab;
     private Camera playerCameraReference;
+    public Camera PlayerCamera => playerCameraReference;
 
     [Header("Position")]
     [SerializeField] private Vector3 cameraPointOffset = new Vector3(0, .5f, 0);
