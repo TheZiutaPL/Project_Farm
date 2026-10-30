@@ -6,9 +6,9 @@ namespace RuntimeGrid
     public class RuntimeCell
     {
         public Vector2Int CellPosition { get; private set; }
+        public GridContent GridContent { get; private set; }
 
-        [SerializeField] private GridContent runtimeCellObject;
-        public bool IsEmpty => runtimeCellObject == null;
+        public bool IsEmpty => GridContent == null;
 
         public RuntimeCell(Vector2Int cellPosition)
         {
@@ -17,7 +17,7 @@ namespace RuntimeGrid
 
         public void SetCellObject(GridContent cellObject)
         {
-            runtimeCellObject = cellObject;
+            GridContent = cellObject;
         }
     }
 }

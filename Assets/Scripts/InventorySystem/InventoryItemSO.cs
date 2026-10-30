@@ -1,3 +1,4 @@
+using Databases;
 using RuntimeGrid;
 using System;
 using UnityEngine;
@@ -5,8 +6,9 @@ using UnityEngine;
 namespace InventorySystem
 {
     [CreateAssetMenu(menuName = "Items/Item")]
-    public class InventoryItemSO : ScriptableObject
+    public class InventoryItemSO : ScriptableObject, IDataIdentifiable<InventoryItemSO>
     {
+        int IDataIdentifiable<InventoryItemSO>.DataID { get => ItemID; set { } }
         [field: SerializeField, Min(0)] public int ItemID { get; private set; } = 1;
 
         [field: SerializeField] public string ItemName { get; private set; }

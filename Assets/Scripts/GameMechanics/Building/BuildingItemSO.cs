@@ -1,9 +1,9 @@
+using InventorySystem;
 using RuntimeGrid;
 using System;
-using Unity.Netcode;
 using UnityEngine;
 
-namespace InventorySystem.ItemTypes
+namespace GameMechanics.Building
 {
     [CreateAssetMenu(menuName = "Items/BuildingItem")]
     public class BuildingItemSO : InventoryItemSO

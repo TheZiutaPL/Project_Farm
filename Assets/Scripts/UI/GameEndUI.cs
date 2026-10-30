@@ -49,11 +49,11 @@ public class GameEndUI : NetworkBehaviour
 
     private void OnEnable()
     {
-        GameTimeManager.OnGameTimePassed += OnGameTimePassed;
+        GameTimeManager.OnGameTimeEnded += OnGameTimePassed;
     }
 
     private void OnDisable()
     {
-        GameTimeManager.OnGameTimePassed -= OnGameTimePassed;
+        GameTimeManager.OnGameTimeEnded -= OnGameTimePassed;
     }
 }

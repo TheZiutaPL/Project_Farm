@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5924731025782676974}
   - component: {fileID: 2881987275184542094}
   m_Layer: 0
-  m_Name: InventoryDatabase
+  m_Name: Database
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,9 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768850d82bd78df4d84a23fbb1aebff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemScriptables:
-  - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
-  - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
-  - {fileID: 11400000, guid: 41e1b3ce017356d41bf103f0f9d3d162, type: 2}
-  - {fileID: 11400000, guid: a16bb5f8742c3cf45a200f55ad6df436, type: 2}
-  - {fileID: 11400000, guid: 6a3e830f2e977e043a63edb5841b51a9, type: 2}
+  <ItemDatabase>k__BackingField:
+    includedData:
+    - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+    - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+    - {fileID: 11400000, guid: 41e1b3ce017356d41bf103f0f9d3d162, type: 2}
+    - {fileID: 11400000, guid: a16bb5f8742c3cf45a200f55ad6df436, type: 2}
+    - {fileID: 11400000, guid: 6a3e830f2e977e043a63edb5841b51a9, type: 2}
+    - {fileID: 11400000, guid: 193639cd5274135499954d79382ac02d, type: 2}
+  <PlantDatabase>k__BackingField:
+    includedData:
+    - {fileID: 11400000, guid: c18d24cf116fd5c4da308add8572d9ed, type: 2}

@@ -20,7 +20,8 @@ namespace GameTime
 
         private bool gameTimePassed = false;
 
-        public static Action OnGameTimePassed;
+        public static Action<float> OnGameTimePassed;
+        public static Action OnGameTimeEnded;
 
         public float GetGameTimeProgress01()
         {
@@ -65,6 +66,8 @@ namespace GameTime
                 Destroy(gameObject);
                 return;
             }
+
+            MinutesPassed.OnValueChanged += MinutesPassedCallback;
         }
 
         private void Update()
@@ -102,7 +105,13 @@ namespace GameTime
         private void OnGameTimePassedRpc()
         {
             Debug.Log("Game Time Ended");
-            OnGameTimePassed?.Invoke();
+            OnGameTimeEnded?.Invoke();
+        }
+
+        private void MinutesPassedCallback(float oldValue, float newValue)
+        {
+            float minutesPassed = newValue - oldValue;
+            OnGameTimePassed?.Invoke(minutesPassed);
         }
     }
 }

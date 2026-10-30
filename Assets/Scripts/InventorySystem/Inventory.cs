@@ -1,3 +1,4 @@
+using Databases;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -23,8 +24,8 @@ namespace InventorySystem
                 return null;
             }
 
-            if (slotIndex < inventory.Count)
-                return ItemDatabase.Instance.GetItemByID(inventory[slotIndex]);
+            if (slotIndex < inventory.Count && inventory[slotIndex] >= 0)
+                return GameDatabase.Instance.ItemDatabase.GetDataByID(inventory[slotIndex]);
 
             return null;
         }
@@ -75,8 +76,8 @@ namespace InventorySystem
             {
                 // When adding an item through List.Add
                 case NetworkListEvent<int>.EventType.Add:
-                    OnItemAdded?.Invoke(ItemDatabase.Instance.GetItemByID(changeEvent.Value));
-                    OnInventorySlotChange?.Invoke((changeEvent.Index, ItemDatabase.Instance.GetItemByID(changeEvent.Value)));
+                    OnItemAdded?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value));
+                    OnInventorySlotChange?.Invoke((changeEvent.Index, GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value)));
                     break;
 
                 // When changing slot on an existing place
@@ -88,14 +89,14 @@ namespace InventorySystem
 
                     // Checks if item has been added to an empty slot
                     else if (changeEvent.PreviousValue < 0 && changeEvent.Value >= 0)
-                        OnItemAdded?.Invoke(ItemDatabase.Instance.GetItemByID(changeEvent.Value));
+                        OnItemAdded?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value));
 
                     // Checks if item has been removed from a slot
                     else if (changeEvent.PreviousValue >= 0 && changeEvent.Value < 0)
-                        OnItemRemoved?.Invoke(ItemDatabase.Instance.GetItemByID(changeEvent.PreviousValue));
+                        OnItemRemoved?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.PreviousValue));
 
                     
-                    OnInventorySlotChange?.Invoke((changeEvent.Index, changeEvent.Value < 0 ? null : ItemDatabase.Instance.GetItemByID(changeEvent.Value)));
+                    OnInventorySlotChange?.Invoke((changeEvent.Index, changeEvent.Value < 0 ? null : GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value)));
                     break;
 
                 // For more complex operations it is safer to just force update the whole inventory

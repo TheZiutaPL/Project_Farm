@@ -1,3 +1,4 @@
+using Databases;
 using InventorySystem;
 using System;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace RuntimeGrid
             if (!rpcParams.GetNetworkPlayerInstance(out NetworkPlayerInstance networkPlayerInstance))
                 return;
 
-            InventoryItemSO item = ItemDatabase.Instance.GetItemByID(itemID);
+            InventoryItemSO item = GameDatabase.Instance.ItemDatabase.GetDataByID(itemID);
             if (item == null)
             {
                 Debug.LogWarning("Trying to use invalid item!");

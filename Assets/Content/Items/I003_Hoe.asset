@@ -15,5 +15,5 @@ MonoBehaviour:
   <ItemID>k__BackingField: 3
   <ItemName>k__BackingField: Hoe
   <ItemSprite>k__BackingField: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  buildingObject: {fileID: 4272642303322527185, guid: 5b88fb2d8ec819a4c92d2fc50db22923, type: 3}
+  buildingObject: {fileID: 7937559412151518657, guid: 5b88fb2d8ec819a4c92d2fc50db22923, type: 3}
   removeItemOnUse: 0
