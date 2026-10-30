@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 964403774661858338}
   - component: {fileID: 8844623256666700542}
   - component: {fileID: 1324552362857205112}
-  - component: {fileID: 7837289110620013579}
   - component: {fileID: 1659193875070422088}
   - component: {fileID: 3934771545083581521}
   - component: {fileID: 6720043480466830186}
@@ -84,24 +83,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <PlayerInputs>k__BackingField: {fileID: 7837289110620013579}
   <PlayerCameraHandler>k__BackingField: {fileID: 6720043480466830186}
   <Interactor>k__BackingField: {fileID: -1207900761158698671}
   <Inventory>k__BackingField: {fileID: 1988212836305317938}
   <GridInteractor>k__BackingField: {fileID: 1659193875070422088}
---- !u!114 &7837289110620013579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2664152673668474812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddef89ed5bd297d4aac4698aadee33f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &1659193875070422088
 MonoBehaviour:
   m_ObjectHideFlags: 0

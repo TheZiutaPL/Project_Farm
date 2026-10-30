@@ -1,25 +1,29 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerInputs : NetworkBehaviour
+public class PlayerInputs : MonoBehaviour
 {
+    public static PlayerInputs Instance { get; private set; }
     public GameInputs Inputs { get; private set; }
 
-    public override void OnNetworkSpawn()
+    public void Awake()
     {
-        if (!IsOwner)
+        if(Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
             return;
+        }
 
         Inputs = new GameInputs();
 
         Inputs.Enable();
     }
 
-    public override void OnNetworkDespawn()
+    public void OnDestroy()
     {
-        if (!IsOwner)
-            return;
-
-        Inputs.Disable();
+        if(Inputs != null)
+            Inputs.Disable();
     }
 }

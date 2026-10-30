@@ -17,12 +17,6 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField, Min(0.001f)] private float smoothingMargin = .05f;
     private Vector3 cameraVelocity;
 
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner)
-            Destroy(this);
-    }
-
     private void InstantiateCamera()
     {
         playerCameraReference = Instantiate(playerCameraPrefab, transform.position, Quaternion.Euler(playerCameraRotation));
@@ -30,6 +24,9 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        if (!IsOwner)
+            return;
+
         if (playerCameraReference == null)
             InstantiateCamera();
 

@@ -5,10 +5,17 @@ namespace RuntimeGrid
     [System.Serializable]
     public class RuntimeCell
     {
-        [SerializeField] private GameObject runtimeCellObject;
+        public Vector2Int CellPosition { get; private set; }
+
+        [SerializeField] private GridContent runtimeCellObject;
         public bool IsEmpty => runtimeCellObject == null;
 
-        public void SetCellObject(GameObject cellObject)
+        public RuntimeCell(Vector2Int cellPosition)
+        {
+            CellPosition = cellPosition;
+        }
+
+        public void SetCellObject(GridContent cellObject)
         {
             runtimeCellObject = cellObject;
         }

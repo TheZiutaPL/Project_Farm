@@ -1,4 +1,6 @@
 using RuntimeGrid;
+using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace InventorySystem.ItemTypes
@@ -6,32 +8,28 @@ namespace InventorySystem.ItemTypes
     [CreateAssetMenu(menuName = "Items/BuildingItem")]
     public class BuildingItemSO : InventoryItemSO
     {
-        [SerializeField] private GameObject buildingObject;
+        [SerializeField] private GridContent buildingObject;
         [SerializeField] private bool removeItemOnUse = true;
 
-        public override void UseItem(Vector2Int cellPosition)
+        public override Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction()
         {
-            base.UseItem(cellPosition);
+            Action<NetworkPlayerInstance, RuntimeCell> action = base.GetItemUseAction();
 
-            if (!RuntimeGridInstance.Instance.TryGetRuntimeCell(cellPosition, out RuntimeCell cell))
+            action += (player, cell) =>
             {
-                Debug.LogWarning("Used item on an invalid cell");
-                return;
-            }
+                if (!cell.IsEmpty)
+                    return;
 
-            if (!cell.IsEmpty)
-            {
-                Debug.LogWarning("Cell is not empty");
-                return;
-            }
+                GridContent building = Instantiate(buildingObject, RuntimeGridInstance.Instance.CellToWorldPosition(cell.CellPosition), Quaternion.identity);
+                building.NetworkObject.Spawn(true);
 
-            // TODO this will not work with netcode, also will need to be spawned via Rpc | possibly most of this method should be in Rpc
-            GameObject building = Instantiate(buildingObject, RuntimeGridInstance.Instance.CellToWorldPosition(cellPosition), Quaternion.identity);
-            cell.SetCellObject(building);
+                building.BindToGridRpc(cell.CellPosition);
 
-            // TODO This also should be via Rpc, since clients cannot change inventories
-            if (removeItemOnUse)
-                NetworkPlayerInstance.OwnerInstance.Inventory.RemoveItem(ItemID);
+                if (removeItemOnUse)
+                    player.Inventory.RemoveItem(ItemID);
+            };
+
+            return action;
         }
     }
 }

@@ -51,12 +51,21 @@ namespace InventorySystem
         {
             inventory.OnListChanged += OnInventoryChanged;
 
-            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.UseItem.performed += UseSelectedItem;
+            if(IsOwner)
+                PlayerInputs.Instance.Inputs.Player.UseItem.performed += UseSelectedItem;
         }
 
         public override void OnNetworkDespawn()
         {
             inventory.OnListChanged -= OnInventoryChanged;
+
+            if(IsOwner)
+                PlayerInputs.Instance.Inputs.Player.UseItem.performed -= UseSelectedItem;
+        }
+
+        private void SubscribeToPlayerInputs()
+        {
+
         }
 
         #region Inventory Management
@@ -85,7 +94,8 @@ namespace InventorySystem
                     else if (changeEvent.PreviousValue >= 0 && changeEvent.Value < 0)
                         OnItemRemoved?.Invoke(ItemDatabase.Instance.GetItemByID(changeEvent.PreviousValue));
 
-                    OnInventorySlotChange?.Invoke((changeEvent.Index, ItemDatabase.Instance.GetItemByID(changeEvent.Value)));
+                    
+                    OnInventorySlotChange?.Invoke((changeEvent.Index, changeEvent.Value < 0 ? null : ItemDatabase.Instance.GetItemByID(changeEvent.Value)));
                     break;
 
                 // For more complex operations it is safer to just force update the whole inventory

@@ -46,7 +46,7 @@ namespace InteractionSystem
             if (!IsOwner)
                 return;
 
-            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Interact.performed += Interact;
+            PlayerInputs.Instance.Inputs.Player.Interact.performed += Interact;
         }
 
         public override void OnNetworkDespawn()
@@ -54,7 +54,7 @@ namespace InteractionSystem
             if (!IsOwner)
                 return;
 
-            NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Interact.performed -= Interact;
+            PlayerInputs.Instance.Inputs.Player.Interact.performed -= Interact;
         }
 
         private void Update()

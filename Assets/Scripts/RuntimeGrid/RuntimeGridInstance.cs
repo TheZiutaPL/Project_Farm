@@ -1,11 +1,14 @@
+using InventorySystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace RuntimeGrid
 {
-    public class RuntimeGridInstance : MonoBehaviour
+    public class RuntimeGridInstance : NetworkBehaviour
     {
         public static RuntimeGridInstance Instance;
 
@@ -29,7 +32,7 @@ namespace RuntimeGrid
 
         private void Start()
         {
-            gridCells = eligibleCells.ToDictionary(x => x, x => new RuntimeCell());
+            gridCells = eligibleCells.ToDictionary(x => x, x => new RuntimeCell(x));
         }
 
         public Vector2Int WorldToCellPosition(Vector3 worldPosition) => (Vector2Int)grid.WorldToCell(worldPosition + grid.cellSize / 2);
@@ -64,6 +67,25 @@ namespace RuntimeGrid
 
             cell = gridCells[cellPosition];
             return true;
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        public void UseItemOnGridRpc(Vector2Int cellPosition, int itemID, RpcParams rpcParams = default)
+        {
+            if (!rpcParams.GetNetworkPlayerInstance(out NetworkPlayerInstance networkPlayerInstance))
+                return;
+
+            InventoryItemSO item = ItemDatabase.Instance.GetItemByID(itemID);
+            if (item == null)
+            {
+                Debug.LogWarning("Trying to use invalid item!");
+                return;
+            }
+
+            if (!TryGetRuntimeCell(cellPosition, out RuntimeCell cell))
+                return;
+
+            item.GetItemUseAction()?.Invoke(networkPlayerInstance, cell);
         }
 
         private void OnDrawGizmos()

@@ -23,10 +23,10 @@ namespace InventorySystem
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
         public void ItemPickupRpc(RpcParams rpcParams = default)
         {
-            if (item != null && NetworkManager.Singleton.ConnectedClients.TryGetValue(rpcParams.Receive.SenderClientId, out NetworkClient networkClient))
+            if (item != null && rpcParams.GetNetworkPlayerInstance(out NetworkPlayerInstance playerInstance))
             {
                 // Player without an inventory shouldn't be able to pickup an item
-                if (!networkClient.PlayerObject.TryGetComponent(out Inventory inventory))
+                if (!playerInstance.TryGetComponent(out Inventory inventory))
                     return;
 
                 // If couldn't add item to inventory
@@ -34,7 +34,7 @@ namespace InventorySystem
                     return;
             }
 
-            NetworkObject.Despawn(gameObject);
+            NetworkObject.Despawn();
         }
     }
 }

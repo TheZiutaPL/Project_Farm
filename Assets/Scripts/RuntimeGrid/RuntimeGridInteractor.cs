@@ -38,11 +38,20 @@ namespace RuntimeGrid
 
         private void HandleMousePointerUpdate()
         {
+            Camera cam;
+            if (NetworkPlayerInstance.OwnerInstance != null)
+                cam = NetworkPlayerInstance.OwnerInstance.PlayerCameraHandler.PlayerCamera;
+            else
+                cam = Camera.main;
+
+            if (cam == null)
+                return;
+
             // Get mouse position
-            Vector2 mousePosition = NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.PointerPosition.ReadValue<Vector2>();
+            Vector2 mousePosition = PlayerInputs.Instance.Inputs.Player.PointerPosition.ReadValue<Vector2>();
 
             // Get world point position
-            Ray ray = NetworkPlayerInstance.OwnerInstance.PlayerCameraHandler.PlayerCamera.ScreenPointToRay(mousePosition);
+            Ray ray = cam.ScreenPointToRay(mousePosition);
             RuntimeGridInstance.Instance.GetGridPlane().Raycast(ray, out float distance);
             Vector3 worldPointPosition = ray.GetPoint(distance);
 

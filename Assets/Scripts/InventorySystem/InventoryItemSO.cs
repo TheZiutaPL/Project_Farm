@@ -1,3 +1,5 @@
+using RuntimeGrid;
+using System;
 using UnityEngine;
 
 namespace InventorySystem
@@ -10,9 +12,14 @@ namespace InventorySystem
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public Sprite ItemSprite { get; private set; }
 
-        public virtual void UseItem(Vector2Int cellPosition)
+        public void UseItem(Vector2Int cellPosition)
         {
-            Debug.Log($"Used item {ItemName} on cell {cellPosition}");
+            RuntimeGridInstance.Instance.UseItemOnGridRpc(cellPosition, ItemID);
         }
+
+        public virtual Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction() => (player, cell) =>
+        {
+            Debug.Log($"Used item {ItemName} on cell {cell.CellPosition}");
+        };
     }
 }

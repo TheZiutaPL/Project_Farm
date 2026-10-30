@@ -23,13 +23,13 @@ public class PlayerMovement : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    protected override void OnNetworkPostSpawn()
+    public override void OnNetworkSpawn()
     {
         if (!IsOwner)
             return;
 
-        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.performed += OnMoveInput_Performed;
-        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.canceled += OnMoveInput_Canceled;
+        PlayerInputs.Instance.Inputs.Player.Move.performed += OnMoveInput_Performed;
+        PlayerInputs.Instance.Inputs.Player.Move.canceled += OnMoveInput_Canceled;
     }
 
     public override void OnNetworkDespawn()
@@ -37,8 +37,8 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.performed -= OnMoveInput_Performed;
-        NetworkPlayerInstance.OwnerInstance.PlayerInputs.Inputs.Player.Move.canceled -= OnMoveInput_Canceled;
+        PlayerInputs.Instance.Inputs.Player.Move.performed -= OnMoveInput_Performed;
+        PlayerInputs.Instance.Inputs.Player.Move.canceled -= OnMoveInput_Canceled;
     }
 
     private void Update()

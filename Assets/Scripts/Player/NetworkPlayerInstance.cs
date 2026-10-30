@@ -13,7 +13,6 @@ public class NetworkPlayerInstance : NetworkBehaviour
     public static Action<NetworkPlayerInstance> OnOwnerInstanceAssigned;
     public static Action<NetworkPlayerInstance> OnOwnerInstanceUnassigned;
 
-    [field: SerializeField] public PlayerInputs PlayerInputs { get; private set; }
     [field: SerializeField] public PlayerCameraHandler PlayerCameraHandler { get; private set; }
     [field: SerializeField] public Interactor Interactor { get; private set; }
     [field: SerializeField] public Inventory Inventory { get; private set; }
@@ -22,15 +21,12 @@ public class NetworkPlayerInstance : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
-        {
-            Destroy(this);
             return;
-        }
 
         if (IsOwnerAssigned)
         {
             Debug.LogWarning($"There are multiple owner instance objects! Despawning {gameObject.name}!");
-            Destroy(this);
+            NetworkObject.Despawn();
             return;
         }
 
