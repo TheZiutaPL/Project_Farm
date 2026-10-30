@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7107400154388065513}
   - component: {fileID: 454561976860041053}
   - component: {fileID: 7937559412151518657}
+  - component: {fileID: 3828702464147113314}
   m_Layer: 0
   m_Name: GridO_Farmland
   m_TagString: Untagged
@@ -74,6 +75,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!65 &3828702464147113314
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044924483631926860}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8, y: 0.1, z: 1.8}
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1001 &3052705437249947458
 PrefabInstance:
   m_ObjectHideFlags: 0

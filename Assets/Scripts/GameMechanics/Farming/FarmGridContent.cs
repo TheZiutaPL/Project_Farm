@@ -1,23 +1,36 @@
 using Databases;
 using GameTime;
+using InteractionSystem;
+using InventorySystem;
 using RuntimeGrid;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace GameMechanics.Farming
 {
-    public class FarmGridContent : GridContent
+    public class FarmGridContent : GridContent, IInteractable
     {
-        private PlantSO crop;
+        private PlantSO plant;
         private NetworkVariable<float> growTime = new NetworkVariable<float>();
         private GrowthVisuals growthVisuals;
 
-        public bool IsPlanted => crop != null;
+        public bool IsPlanted => plant != null;
 
-        public bool IsReady => IsPlanted && growTime.Value >= crop.GrowthTime;
+        public bool IsReady => IsPlanted && growTime.Value >= plant.GrowthTime;
 
         public bool CanPlant => !IsPlanted;
 
+        public string TargetableName
+        {
+            get
+            {
+                string str = "Farmland";
+                if (IsPlanted)
+                    str += $" {plant.PlantName}";
+
+                return str;
+            }
+        }
         public override void OnNetworkSpawn()
         {
             GameTimeManager.OnGameTimePassed += OnTimePassed;
@@ -28,6 +41,7 @@ namespace GameMechanics.Farming
             GameTimeManager.OnGameTimePassed -= OnTimePassed;
         }
 
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Server)]
         public void SetPlantRpc(int plantID)
         {
             PlantSO plantSO = GameDatabase.Instance.PlantDatabase.GetDataByID(plantID);
@@ -41,8 +55,28 @@ namespace GameMechanics.Farming
         {
             PlantSO plantSO = GameDatabase.Instance.PlantDatabase.GetDataByID(plantID);
 
-            crop = plantSO;
+            plant = plantSO;
             growthVisuals = GameObject.Instantiate(plantSO.GrowthProgressObject, transform);
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Server)]
+        public void ClearPlantRpc()
+        {
+            if (!IsPlanted)
+                return;
+
+            ClearPlantForUsersRpc();
+
+            growTime.Value = 0;
+        }
+
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        private void ClearPlantForUsersRpc()
+        {
+            plant = null;
+
+            if (growthVisuals != null)
+                Destroy(growthVisuals.gameObject);
         }
 
         private void OnTimePassed(float minutesPassed)
@@ -55,9 +89,27 @@ namespace GameMechanics.Farming
 
             if (growthVisuals != null)
             {
-                float progress01 = Mathf.Clamp01(crop.GrowthTime > 0 ? growTime.Value / crop.GrowthTime : 1);
+                float progress01 = Mathf.Clamp01(plant.GrowthTime > 0 ? growTime.Value / plant.GrowthTime : 1);
                 growthVisuals.UpdateGrowthStage(progress01);
             }
+        }
+        public void Interact()
+        {
+            if (!IsReady)
+                return;
+
+            ItemSpawnManager.SpawnItems(transform.position, plant.GetItemDrops());
+            ClearPlantRpc();
+        }
+
+        public void OnTarget()
+        {
+            // TODO Show popup
+        }
+
+        public void OffTarget()
+        {
+            // TODO Hide popup
         }
     }
 }

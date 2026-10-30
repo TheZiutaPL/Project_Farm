@@ -17,3 +17,9 @@ MonoBehaviour:
   <PlantSprite>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   <GrowthTime>k__BackingField: 50
   <GrowthProgressObject>k__BackingField: {fileID: 352321720738212858, guid: 6fdaff9bc7698874eb80c0de4d2067a0, type: 3}
+  itemDrops:
+  - {fileID: 11400000, guid: 193639cd5274135499954d79382ac02d, type: 2}
+  - {fileID: 11400000, guid: 193639cd5274135499954d79382ac02d, type: 2}
+  - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+  - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+  - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}

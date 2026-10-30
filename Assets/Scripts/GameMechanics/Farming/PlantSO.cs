@@ -17,5 +17,10 @@ namespace GameMechanics.Farming
 
         // TODO this will be instantiated visual object for showing growth progress
         [field: SerializeField] public GrowthVisuals GrowthProgressObject { get; private set; }
+
+        [Header("Rewards")]
+        [SerializeField] private InventoryItemSO[] itemDrops = new InventoryItemSO[0];
+
+        public InventoryItemSO[] GetItemDrops() => itemDrops;
     }
 }

@@ -1,3 +1,4 @@
+using Databases;
 using InteractionSystem;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,13 +12,26 @@ namespace InventorySystem
 
         public void Interact()
         {
-            // TODO pickup
             if (item != null)
             {
                 ItemPickupRpc();
             }
             else
                 NetworkObject.Despawn();
+        }
+
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        public void SetItemRpc(int itemID)
+        {
+            InventoryItemSO itemSO = GameDatabase.Instance.ItemDatabase.GetDataByID(itemID);
+
+            if(itemSO == null)
+            {
+                NetworkObject.Despawn();
+                return;
+            }
+
+            this.item = itemSO;
         }
 
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

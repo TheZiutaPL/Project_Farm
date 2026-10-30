@@ -1,3 +1,4 @@
+using InventorySystem;
 using UnityEngine;
 
 public static class UtilityMethods
