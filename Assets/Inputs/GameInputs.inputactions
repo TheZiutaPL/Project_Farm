@@ -50,6 +50,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "DropItem",
+                    "type": "Button",
+                    "id": "05a0a745-0f75-46c3-8654-89d6bceb27f9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -261,6 +270,17 @@
                     "action": "SlotSelection",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "52920364-6fc6-495a-bb40-83ca2f3d1c5b",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DropItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

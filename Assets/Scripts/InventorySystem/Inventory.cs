@@ -55,6 +55,7 @@ namespace InventorySystem
             if (IsOwner)
             {
                 PlayerInputs.Instance.Inputs.Player.UseItem.performed += UseSelectedItem;
+                PlayerInputs.Instance.Inputs.Player.DropItem.performed += DropSelectedItem;
 
                 PlayerInputs.Instance.Inputs.Player.SlotSelection.performed += ChangeSelectedSlot;
             }
@@ -67,6 +68,7 @@ namespace InventorySystem
             if (IsOwner)
             {
                 PlayerInputs.Instance.Inputs.Player.UseItem.performed -= UseSelectedItem;
+                PlayerInputs.Instance.Inputs.Player.DropItem.performed -= DropSelectedItem;
 
                 PlayerInputs.Instance.Inputs.Player.SlotSelection.performed -= ChangeSelectedSlot;
             }
@@ -136,6 +138,14 @@ namespace InventorySystem
             return false;
         }
 
+        public bool RemoveItemAtSlot(int slotIndex)
+        {
+            if (GetItemAtSlot(slotIndex) == null)
+                return true;
+
+            inventory[slotIndex] = -1;
+            return true;
+        }
         public bool RemoveItem(InventoryItemSO item)
         {
             if(item == null)
@@ -172,6 +182,31 @@ namespace InventorySystem
                 MoveSelectedSlotIndexToLeft();
             else
                 MoveSelectedSlotIndexToRight();
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        private void DropItemFromSlotRpc(int slotIndex, RpcParams rpcParams = default)
+        {
+            if (!rpcParams.GetNetworkPlayerInstance(out NetworkPlayerInstance player))
+                return;
+
+            InventoryItemSO item = player.Inventory.GetItemAtSlot(slotIndex);
+            if (item == null)
+                return;
+
+            ItemSpawnManager.SpawnItems(player.transform.position, item);
+            player.Inventory.RemoveItemAtSlot(slotIndex);
+        }
+
+        private void DropSelectedItem(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            if (!IsOwner)
+                return;
+
+            DropItemFromSlotRpc(SelectedSlotIndex);
         }
 
         private void UseSelectedItem(InputAction.CallbackContext ctx)

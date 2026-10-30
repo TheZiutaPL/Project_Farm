@@ -86,9 +86,6 @@ namespace GameTime
         private void HandleGameTimeUpdate()
         {
             MinutesPassed.Value += Time.deltaTime * gameMinutesPerSecond;
-
-            var time = GetInGameTime();
-            Debug.Log($"InGame time - {time.hour}:{time.minute}");
         }
 
         private void HandleGameEndCheckUpdate()
