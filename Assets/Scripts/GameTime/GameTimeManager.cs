@@ -20,7 +20,7 @@ namespace GameTime
 
         private bool gameTimePassed = false;
 
-        public Action OnGameTimePassed;
+        public static Action OnGameTimePassed;
 
         public float GetGameTimeProgress01()
         {

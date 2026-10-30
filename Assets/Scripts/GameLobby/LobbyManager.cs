@@ -380,14 +380,13 @@ namespace GameLobby
             return callbacks;
         }
 
-        private const string LOADED_SCENE_NAME = "GameScene";
         public void StartGame()
         {
             if (!IsLobbyHost)
                 return;
 
             Debug.Log("Starting game...");
-            NetworkManager.Singleton.SceneManager.LoadScene(LOADED_SCENE_NAME, LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene(Constants.GAME_SCENE_NAME, LoadSceneMode.Single);
         }
 
         private void OnDestroy()
