@@ -1,5 +1,6 @@
 using Databases;
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +16,22 @@ namespace InventorySystem
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Server
             );
+
+        public List<InventoryItemSO> GetItems()
+        {
+            List<InventoryItemSO> items = new List<InventoryItemSO>();
+
+            for (int i = 0; i < inventory.Count; i++ )
+            {
+                InventoryItemSO item = GameDatabase.Instance.ItemDatabase.GetDataByID(inventory[i]);
+                if (item == null)
+                    continue;
+
+                items.Add(item);
+            }
+
+            return items;
+        }
 
         public InventoryItemSO GetItemAtSlot(int slotIndex)
         {

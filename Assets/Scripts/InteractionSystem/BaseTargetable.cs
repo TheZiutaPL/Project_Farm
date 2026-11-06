@@ -7,7 +7,7 @@ namespace InteractionSystem
     {
         public virtual string TargetableName => gameObject.name;
 
-        public void OnTarget()
+        public virtual void OnTarget()
         {
             // TODO highlight
         }
