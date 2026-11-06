@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5129082670630514331}
   - component: {fileID: 4991661929500507901}
   - component: {fileID: 4927979339700220664}
+  - component: {fileID: 2265336992979841983}
   m_Layer: 0
   m_Name: ItemPickable
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4123544497
+  GlobalObjectIdHash: 1726184256
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -97,6 +98,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   item: {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+--- !u!114 &2265336992979841983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3171347599876981518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efbb9578f1ae8184b964f12d806991f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 6238772521412074075}
 --- !u!1 &7621555521001349017
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +176,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 50c3013fc6e771f4b8c8e472e83be954, type: 2}
+  - {fileID: 2100000, guid: 61d4dc28d5b087b4bb6f9fc23559dd6b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
