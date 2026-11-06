@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,14 +8,16 @@ namespace InteractionSystem
     {
         public virtual string TargetableName => gameObject.name;
 
+        public Action<bool> OnTargetAction;
+
         public void OnTarget()
         {
-            // TODO highlight
+            OnTargetAction?.Invoke(true);
         }
 
         public void OffTarget()
         {
-            // TODO end highlight
+            OnTargetAction?.Invoke(false);
         }
     }
 }
