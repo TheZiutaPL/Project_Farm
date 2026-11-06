@@ -5094,6 +5094,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: --=RequestManager=--
       objectReference: {fileID: 0}
+    - target: {fileID: 7997261368713148649, guid: 265e167d2fa29754ab919001ff3aa65a, type: 3}
+      propertyPath: requestableItems.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7997261368713148649, guid: 265e167d2fa29754ab919001ff3aa65a, type: 3}
+      propertyPath: 'requestableItems.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+    - target: {fileID: 7997261368713148649, guid: 265e167d2fa29754ab919001ff3aa65a, type: 3}
+      propertyPath: 'requestableItems.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+    - target: {fileID: 7997261368713148649, guid: 265e167d2fa29754ab919001ff3aa65a, type: 3}
+      propertyPath: 'requestableItems.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 41e1b3ce017356d41bf103f0f9d3d162, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

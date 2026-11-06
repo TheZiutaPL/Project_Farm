@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Requests
 {
@@ -17,6 +18,10 @@ namespace Requests
         private float requestTimer;
 
         private NetworkList<RequestData> activeRequests = new NetworkList<RequestData>();
+
+        [Header("Request Generation")]
+        [SerializeField] private Vector2Int minMaxRequestedItems = new Vector2Int(1, 4);
+        [SerializeField] private InventoryItemSO[] requestableItems = new InventoryItemSO[0];
         private int requestIndex;
 
         public HashSet<int> GetActiveRequestIDs()
@@ -75,13 +80,17 @@ namespace Requests
                 return;
 
             requestIndex++;
-            RequestData requestData = new RequestData()
+            int requestedItems = Random.Range(minMaxRequestedItems.x, minMaxRequestedItems.y);
+            for (int i = 0; i < requestedItems; i++)
             {
-                RequestID = requestIndex,
-            };
+                activeRequests.Add(new RequestData()
+                {
+                    RequestID = requestIndex,
+                    RequestedItemID = requestableItems[Random.Range(0, requestableItems.Length)].ItemID,
+                });
+            }
 
-            activeRequests.Add(requestData);
-            Debug.Log("Added new request!");
+            Debug.Log($"Added new Request #{requestIndex}!");
         }
 
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -161,7 +170,7 @@ namespace Requests
                 if (!completedRequests.Contains(activeRequests[i].RequestID))
                     continue;
 
-                Debug.Log($"Completed request {activeRequests[i].RequestID}");
+                Debug.Log($"Completed Request #{activeRequests[i].RequestID}");
                 activeRequests.RemoveAt(i);
             }
         }
