@@ -23,7 +23,11 @@ namespace InventorySystem
 
             for (int i = 0; i < inventory.Count; i++ )
             {
+                if (inventory[i] < 0)
+                    continue;
+
                 InventoryItemSO item = GameDatabase.Instance.ItemDatabase.GetDataByID(inventory[i]);
+
                 if (item == null)
                     continue;
 
