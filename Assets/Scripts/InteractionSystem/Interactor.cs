@@ -73,16 +73,20 @@ namespace InteractionSystem
         {
             int found = Physics.OverlapSphereNonAlloc(transform.position, interactionRange, colls, interactionMask);
 
-            // Finds first found targetable
-            // TODO find closest
+            // Finds closest targetable
             ITargetable targetable = null;
+            float smallestDistance = float.MaxValue;
             for (int i = 0; i < found; i++)
             {
                 if (!colls[i].TryGetComponent(out ITargetable temp) || !UtilityMethods.IsInterfaceValid(temp))
                     continue;
 
+                float distance = Vector3.Distance(transform.position, colls[i].ClosestPoint(transform.position));
+                if (smallestDistance <= distance)
+                    continue;
+
                 targetable = temp;
-                break;
+                smallestDistance = distance;
             }
 
             SetTargetable(targetable);
