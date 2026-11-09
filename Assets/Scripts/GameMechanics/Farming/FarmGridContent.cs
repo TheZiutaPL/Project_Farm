@@ -2,14 +2,17 @@ using Databases;
 using GameTime;
 using InteractionSystem;
 using InventorySystem;
+using Popups;
+using Popups.Specific;
 using RuntimeGrid;
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace GameMechanics.Farming
 {
-    public class FarmGridContent : GridContent, IInteractable
+    public class FarmGridContent : GridContent, IInteractable, IPopable
     {
         private PlantSO plant;
         private NetworkVariable<float> growTime = new NetworkVariable<float>();
@@ -18,6 +21,7 @@ namespace GameMechanics.Farming
         public bool IsPlanted => plant != null;
 
         public bool IsReady => IsPlanted && growTime.Value >= plant.GrowthTime;
+        public float GetGrowth01() => IsPlanted ? (plant.GrowthTime > 0 ? Mathf.Clamp01(growTime.Value / plant.GrowthTime) : 1) : 0;
 
         public bool CanPlant => !IsPlanted;
 
@@ -91,7 +95,7 @@ namespace GameMechanics.Farming
 
             if (growthVisuals != null)
             {
-                float progress01 = Mathf.Clamp01(plant.GrowthTime > 0 ? growTime.Value / plant.GrowthTime : 1);
+                float progress01 = GetGrowth01();
                 growthVisuals.UpdateGrowthStage(progress01);
             }
         }
@@ -106,14 +110,29 @@ namespace GameMechanics.Farming
 
         public Action<bool> OnTargetAction { get; set; }
 
+        public string PopupName => IsPlanted ? plant.PlantName : $"Empty";
+
+        public PopupType PopupType => PopupType.Plant;
+
+        public Vector3 Position => transform.position + Vector3.up;
+
+        private PopupInstance popupInstance;
+
         public void OnTarget()
         {
-            // TODO Show popup
+            if(IsPlanted)
+                popupInstance = PopupUI.SetPopup(this);
         }
 
         public void OffTarget()
         {
-            // TODO Hide popup
+            popupInstance.ReleasePopup();
         }
+
+        public Dictionary<string, object> GetPopupInfo() => new Dictionary<string, object>()
+        {
+            {PopupInfoKeywords.SOIL_MOISTURE_01, .25f },
+            {PopupInfoKeywords.PLANT_GROWTH_01, GetGrowth01()},
+        };
     }
 }
