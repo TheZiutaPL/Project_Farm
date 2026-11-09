@@ -23,6 +23,9 @@ namespace GameTime
         public static Action<float> OnGameTimePassed;
         public static Action OnGameTimeEnded;
 
+        /// <summary>
+        /// Returns progress of a game in 0-1 (not in-game time, just from start to finish of the game)
+        /// </summary>
         public float GetGameTimeProgress01()
         {
             float totalGameMinutes = gameHours * MINUTES_PER_HOUR;
@@ -33,13 +36,16 @@ namespace GameTime
             return Mathf.Clamp01(MinutesPassed.Value / totalGameMinutes);
         }
 
+        /// <summary>
+        /// Returns an in-game day cycle in 0-1
+        /// </summary>
         public float GetInGameTimeProgress01()
         {
             (int hour, int minute) inGameTime = GetInGameTime();
 
             int inGameMinutes = inGameTime.hour * MINUTES_PER_HOUR + inGameTime.minute;
 
-            return inGameMinutes / (HOURS_PER_DAY * MINUTES_PER_HOUR);
+            return inGameMinutes / (float)(HOURS_PER_DAY * MINUTES_PER_HOUR);
         }
 
         public (int hour, int minute) GetInGameTime()
