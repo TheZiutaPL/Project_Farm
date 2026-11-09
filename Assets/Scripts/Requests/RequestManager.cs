@@ -49,12 +49,15 @@ namespace Requests
 
         private void RequestsUpdated(NetworkListEvent<RequestData> changeEvent)
         {
+            if (IsServer)
+                requestTimer = requestWaitTime;
+
             OnRequestsUpdated?.Invoke();
         }
 
         private void Update()
         {
-            if (!IsServer && Instance != this)
+            if (!IsServer || Instance != this)
                 return;
 
             HandleRequestUpdate();
@@ -62,14 +65,16 @@ namespace Requests
 
         private void HandleRequestUpdate()
         {
-            if (activeRequests.Count >= maxActiveRequests)
-                return;
-
             requestTimer -= Time.deltaTime;
 
             if(requestTimer <= 0)
             {
                 requestTimer = requestWaitTime;
+
+                // If requests are full
+                if (GetActiveRequestIDs().Count >= maxActiveRequests)
+                    return;
+
                 CreateNewRequest();
             }
         }

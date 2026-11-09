@@ -3,6 +3,7 @@ using GameTime;
 using InteractionSystem;
 using InventorySystem;
 using RuntimeGrid;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ namespace GameMechanics.Farming
                 return str;
             }
         }
+
         public override void OnNetworkSpawn()
         {
             GameTimeManager.OnGameTimePassed += OnTimePassed;
@@ -101,6 +103,8 @@ namespace GameMechanics.Farming
             ItemSpawnManager.SpawnItems(transform.position, plant.GetItemDrops());
             ClearPlantRpc();
         }
+
+        public Action<bool> OnTargetAction { get; set; }
 
         public void OnTarget()
         {

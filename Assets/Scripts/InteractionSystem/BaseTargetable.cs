@@ -8,16 +8,16 @@ namespace InteractionSystem
     {
         public virtual string TargetableName => gameObject.name;
 
-        public Action<bool> OnTargetAction;
+        public Action<bool> OnTargetAction { get; set; }
 
         public void OnTarget()
         {
-            OnTargetAction?.Invoke(true);
+
         }
 
         public void OffTarget()
         {
-            OnTargetAction?.Invoke(false);
+
         }
     }
 }

@@ -22,7 +22,10 @@ namespace InteractionSystem
                 return;
 
             if (UtilityMethods.IsInterfaceValid(currentTargetable))
+            {
                 currentTargetable.OffTarget();
+                currentTargetable.OnTargetAction?.Invoke(false);
+            }
 
             if (!UtilityMethods.IsInterfaceValid(targetable))
             {
@@ -39,6 +42,7 @@ namespace InteractionSystem
                 currentInteractable = null;
 
             targetable.OnTarget();
+            targetable.OnTargetAction?.Invoke(true);
         }
 
         protected override void OnNetworkPostSpawn()

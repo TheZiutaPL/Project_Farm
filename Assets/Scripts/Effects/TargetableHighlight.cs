@@ -10,12 +10,12 @@ public class TargetableHighlight : MonoBehaviour
 
     private void Awake()
     {
-        GetComponent<BaseTargetable>().OnTargetAction += OnTargetAction;
+        GetComponent<BaseTargetable>().OnTargetAction += SetHighlight;
     }
 
-    private void OnTargetAction(bool target)
+    private void SetHighlight(bool set)
     {
         for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material.SetInt(SELECTION_BOOL_KEY, target ? 1 : 0);
+            renderers[i].material.SetInt(SELECTION_BOOL_KEY, set ? 1 : 0);
     }
 }

@@ -1,5 +1,6 @@
 using InteractionSystem;
 using InventorySystem;
+using System;
 using UnityEngine;
 
 namespace Requests
@@ -7,6 +8,7 @@ namespace Requests
     public class RequestObject : MonoBehaviour, ITargetable, IInteractable
     {
         public string TargetableName => $"Request #{RequestID}";
+        public Action<bool> OnTargetAction { get; set; }
 
         public int RequestID { get; private set; }
 

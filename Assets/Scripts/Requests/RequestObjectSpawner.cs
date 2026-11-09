@@ -1,20 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Requests
 {
-    public class RequestObjectSpawner : MonoBehaviour
+    public class RequestObjectSpawner : NetworkBehaviour
     {
         [SerializeField] private RequestObject requestObjectPrefab;
 
         [SerializeField] private Transform[] requestObjectPositions = new Transform[0];
         private Dictionary<Transform, RequestObject> requestObjectDictionary;
-
-        private void Awake()
-        {
-            InitializeRequestObjects();
-        }
 
         private void InitializeRequestObjects()
         {
@@ -24,13 +20,20 @@ namespace Requests
             requestObjectDictionary = requestObjectPositions.ToDictionary(x => x, x => Instantiate(requestObjectPrefab, x));
         }
 
-        private void OnEnable()
+        public override void OnNetworkSpawn()
         {
+            InitializeRequestObjects();
+
             RequestManager.OnRequestsUpdated += OnRequestsUpdated;
+            HideAllRequestObjects();
+        }
+
+        protected override void OnNetworkSessionSynchronized()
+        {
             OnRequestsUpdated();
         }
 
-        private void OnDisable()
+        public override void OnNetworkDespawn()
         {
             RequestManager.OnRequestsUpdated -= OnRequestsUpdated;
             HideAllRequestObjects();

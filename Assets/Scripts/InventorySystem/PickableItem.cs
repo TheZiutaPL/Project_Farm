@@ -8,7 +8,13 @@ namespace InventorySystem
     public class PickableItem : BaseTargetable, IInteractable
     {
         [SerializeField] private InventoryItemSO item;
+        [SerializeField] private SpriteRenderer spriteRenderer;
         public override string TargetableName => item.ItemName;
+
+        private void Awake()
+        {
+            UpdateItemSprite();
+        }
 
         public void Interact()
         {
@@ -18,6 +24,12 @@ namespace InventorySystem
             }
             else
                 NetworkObject.Despawn();
+        }
+
+        private void UpdateItemSprite()
+        {
+            if (item != null && spriteRenderer != null)
+                spriteRenderer.sprite = item.ItemSprite;
         }
 
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
@@ -31,7 +43,8 @@ namespace InventorySystem
                 return;
             }
 
-            this.item = itemSO;
+            item = itemSO;
+            UpdateItemSprite();
         }
 
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

@@ -1,4 +1,5 @@
 using InteractionSystem;
+using System;
 using UnityEngine;
 
 namespace InteractionSystem
@@ -6,6 +7,8 @@ namespace InteractionSystem
     public class DebugInteractable : MonoBehaviour, IInteractable
     {
         public string TargetableName => "Debug";
+
+        public Action<bool> OnTargetAction { get; set; }
 
         public void Interact()
         {
