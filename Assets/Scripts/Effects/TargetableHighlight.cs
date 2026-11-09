@@ -1,7 +1,6 @@
 using InteractionSystem;
 using UnityEngine;
 
-[RequireComponent(typeof(BaseTargetable))]
 public class TargetableHighlight : MonoBehaviour
 {
     [SerializeField] private Renderer[] renderers = new Renderer[0];
@@ -10,7 +9,7 @@ public class TargetableHighlight : MonoBehaviour
 
     private void Awake()
     {
-        GetComponent<BaseTargetable>().OnTargetAction += SetHighlight;
+        GetComponent<ITargetable>().OnTargetAction += SetHighlight;
     }
 
     private void SetHighlight(bool set)
