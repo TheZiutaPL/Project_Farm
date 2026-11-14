@@ -24,7 +24,6 @@ namespace GameTime
                 return;
 
             float progress = GameTimeManager.Instance.GetInGameTimeProgress01();
-            Debug.Log(progress);
 
             if (RenderSettings.sun != null)
             {
