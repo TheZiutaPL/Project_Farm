@@ -11,8 +11,7 @@ namespace InventorySystem.UI
         public int SlotIndex { get; private set; }
 
         private Toggle toggle;
-        [SerializeField] private Sprite emptySlotSprite;
-        [SerializeField] private Image itemImage;
+        [SerializeField] private ItemDisplay itemDisplay;
 
         private bool isSelected;
 
@@ -39,14 +38,14 @@ namespace InventorySystem.UI
                 return;
             }
 
-            itemImage.sprite = newItem.ItemSprite;
+            itemDisplay.SetDisplay(newItem);
 
             // TODO if is selected - automatically select new slot content 
         }
 
         private void ClearSlot()
         {
-            itemImage.sprite = emptySlotSprite;
+            itemDisplay.ClearDisplay();
 
             // TODO if is selected - deselect;
         }

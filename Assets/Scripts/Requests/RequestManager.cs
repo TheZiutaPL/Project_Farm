@@ -33,7 +33,7 @@ namespace Requests
                 if (!requestIDs.Contains(activeRequests[i].RequestID))
                     requestIDs.Add(activeRequests[i].RequestID);
             }
-            
+
             return requestIDs;
         }
 
@@ -67,7 +67,7 @@ namespace Requests
         {
             requestTimer -= Time.deltaTime;
 
-            if(requestTimer <= 0)
+            if (requestTimer <= 0)
             {
                 requestTimer = requestWaitTime;
 
@@ -110,7 +110,7 @@ namespace Requests
             List<InventoryItemSO> playerItems = networkPlayerInstance.Inventory.GetItems();
 
             // If is targeting a request
-            if(targetRequestID >= 0)
+            if (targetRequestID >= 0)
             {
                 int[] indexes = GetRequestDataIndexes(targetRequestID);
                 foreach (var index in indexes)
@@ -224,7 +224,7 @@ namespace Requests
 
         public InventoryItemSO[] GetRequestItems(int targetRequestID, bool skipCompleted)
         {
-            if(targetRequestID < 0)
+            if (targetRequestID < 0)
                 return new InventoryItemSO[0];
 
             List<InventoryItemSO> items = new List<InventoryItemSO>();
@@ -235,6 +235,30 @@ namespace Requests
                     continue;
 
                 items.Add(GameDatabase.Instance.ItemDatabase.GetDataByID(activeRequests[i].RequestedItemID));
+            }
+
+            return items.ToArray();
+        }
+        public InventoryItemSO[] GetRequestedItems(int targetRequestID, out List<InventoryItemSO> completedItems)
+        {
+            completedItems = new List<InventoryItemSO>();
+
+            if (targetRequestID < 0)
+                return new InventoryItemSO[0];
+
+            List<InventoryItemSO> items = new List<InventoryItemSO>();
+
+            for (int i = 0; i < activeRequests.Count; i++)
+            {
+                if (targetRequestID != activeRequests[i].RequestID)
+                    continue;
+
+                InventoryItemSO item = GameDatabase.Instance.ItemDatabase.GetDataByID(activeRequests[i].RequestedItemID);
+
+                if (activeRequests[i].IsCompleted)
+                    completedItems.Add(item);
+
+                items.Add(item);
             }
 
             return items.ToArray();

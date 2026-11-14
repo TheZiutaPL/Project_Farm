@@ -3328,6 +3328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headerPopupPrefab: {fileID: 1768252807106481432, guid: 9482b20d6f968cb42a4f9f519325edc6, type: 3}
   plantPopupPrefab: {fileID: 1332137193913592643, guid: bb6ec5966fbe3fd48a9dda1fdb77e983, type: 3}
+  requestPopupPrefab: {fileID: 4891523568876711044, guid: 7f6547ae7d6e740448ee8bfb10dadf39, type: 3}
 --- !u!1001 &1162992448
 PrefabInstance:
   m_ObjectHideFlags: 0

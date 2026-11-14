@@ -7,5 +7,6 @@ namespace Popups
         Header = 0,
 
         Plant = 5,
+        Request = 6,
     }
 }

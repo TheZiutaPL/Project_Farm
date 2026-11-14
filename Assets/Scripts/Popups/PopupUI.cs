@@ -12,10 +12,12 @@ namespace Popups
         [Header("Popup Types")]
         [SerializeField] private PopupDisplay headerPopupPrefab; 
         [SerializeField] private PopupDisplay plantPopupPrefab;
+        [SerializeField] private PopupDisplay requestPopupPrefab;
         private PopupDisplay GetPrefabForPopupType(PopupType popupType) => popupType switch
         {
             PopupType.Header => headerPopupPrefab,
             PopupType.Plant => plantPopupPrefab,
+            PopupType.Request => requestPopupPrefab,
             _ => throw new System.NotImplementedException(),
         };
 

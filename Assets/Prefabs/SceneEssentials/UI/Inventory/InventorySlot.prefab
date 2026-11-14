@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2493500961105963968}
   - component: {fileID: 5587158833518683503}
+  - component: {fileID: 4315021282897236777}
   - component: {fileID: 5648307682875127901}
   m_Layer: 5
   m_Name: InventorySlot
@@ -127,7 +128,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4478e54c75a614f8ed2f43e1889f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptySlotSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  itemDisplay: {fileID: 4315021282897236777}
+--- !u!114 &4315021282897236777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4538353052072454977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126719f15175ff1498636fe08c0f4ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptyDisplaySprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   itemImage: {fileID: 6627077201467329441}
 --- !u!114 &5648307682875127901
 MonoBehaviour:
