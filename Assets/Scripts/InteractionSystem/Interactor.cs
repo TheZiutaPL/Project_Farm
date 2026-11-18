@@ -8,6 +8,7 @@ namespace InteractionSystem
 {
     public class Interactor : NetworkBehaviour
     {
+        [SerializeField] private Transform interactionOriginPoint;
         [SerializeField] private LayerMask interactionMask;
         [SerializeField] private float interactionRange = 2;
 
@@ -71,7 +72,7 @@ namespace InteractionSystem
 
         private void PerformInteractableLookupUpdate()
         {
-            int found = Physics.OverlapSphereNonAlloc(transform.position, interactionRange, colls, interactionMask);
+            int found = Physics.OverlapSphereNonAlloc(interactionOriginPoint.position, interactionRange, colls, interactionMask);
 
             // Finds closest targetable
             ITargetable targetable = null;
@@ -81,7 +82,7 @@ namespace InteractionSystem
                 if (!colls[i].TryGetComponent(out ITargetable temp) || !UtilityMethods.IsInterfaceValid(temp))
                     continue;
 
-                float distance = Vector3.Distance(transform.position, colls[i].ClosestPoint(transform.position));
+                float distance = Vector3.Distance(interactionOriginPoint.position, colls[i].ClosestPoint(interactionOriginPoint.position));
                 if (smallestDistance <= distance)
                     continue;
 
@@ -105,7 +106,7 @@ namespace InteractionSystem
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position, interactionRange);
+            Gizmos.DrawWireSphere(interactionOriginPoint.position, interactionRange);
         }
     }
 }
