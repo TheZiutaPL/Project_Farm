@@ -75,6 +75,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  farmlandMesh: {fileID: 4439694680217443270}
+  fullWaterTime: 60
+  wateringMultiplier: 1.3
 --- !u!65 &3828702464147113314
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -144,6 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5f7358885b0f79b40a344b086393d041, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 14a69d6837d246943aaf9bd01cc86da1, type: 2}
     - target: {fileID: 919132149155446097, guid: 5f7358885b0f79b40a344b086393d041, type: 3}
       propertyPath: m_Name
       value: f_field_01
@@ -156,5 +163,10 @@ PrefabInstance:
 --- !u!4 &3303348642568642729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f7358885b0f79b40a344b086393d041, type: 3}
+  m_PrefabInstance: {fileID: 3052705437249947458}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4439694680217443270 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 5f7358885b0f79b40a344b086393d041, type: 3}
   m_PrefabInstance: {fileID: 3052705437249947458}
   m_PrefabAsset: {fileID: 0}

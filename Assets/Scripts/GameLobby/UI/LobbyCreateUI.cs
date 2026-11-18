@@ -9,6 +9,11 @@ namespace GameLobby.UI
         [SerializeField] private TMP_InputField lobbyNameInputField;
         [SerializeField] private Toggle privateToggle;
 
+        private void OnEnable()
+        {
+            privateToggle.isOn = false;
+        }
+
         public void CreateLobby()
         {
             if (!LobbyManager.IsSignedIn)

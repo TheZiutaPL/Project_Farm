@@ -15,6 +15,7 @@ namespace GameMechanics.Farming
 {
     public class FarmGridContent : GridContent, IInteractable, IPopable
     {
+
         private PlantSO plant;
         private NetworkVariable<float> growTime = new NetworkVariable<float>();
         private GrowthVisuals growthVisuals;
@@ -25,6 +26,16 @@ namespace GameMechanics.Farming
         public float GetGrowth01() => IsPlanted ? (plant.GrowthTime > 0 ? Mathf.Clamp01(growTime.Value / plant.GrowthTime) : 1) : 0;
 
         public bool CanPlant => !IsPlanted;
+
+        [SerializeField] private MeshRenderer farmlandMesh;
+        private const string SHADER_WATERING_EFFECT_KEY = "_WaterFactor";
+
+        [SerializeField] private float fullWaterTime = 60;
+        [SerializeField] private float wateringMultiplier = 2f;
+        private NetworkVariable<float> waterTime = new NetworkVariable<float>();
+        public float GetWater01() => fullWaterTime > 0 ? Mathf.Clamp01(waterTime.Value / fullWaterTime) : 0;
+
+        public bool IsWatered => waterTime.Value >= 0;
 
         public string TargetableName
         {
@@ -94,19 +105,32 @@ namespace GameMechanics.Farming
                 Destroy(growthVisuals.gameObject);
         }
 
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Server)]
+        public void WaterFarmRpc()
+        {
+            waterTime.Value = fullWaterTime;
+        }
+
         private void OnTimePassed(float minutesPassed)
         {
-            if (!IsPlanted)
-                return;
-
             if (IsServer)
-                growTime.Value += minutesPassed;
+            {
+                if (IsPlanted && !IsReady)
+                {
+                    float multiplier = IsWatered ? wateringMultiplier : 1;
+                    growTime.Value += minutesPassed * multiplier;
+                }
 
-            if (growthVisuals != null)
+                waterTime.Value -= minutesPassed;
+            }
+
+            if (IsPlanted && growthVisuals != null)
             {
                 float progress01 = GetGrowth01();
                 growthVisuals.UpdateGrowthStage(progress01);
             }
+
+            farmlandMesh.material.SetFloat(SHADER_WATERING_EFFECT_KEY, GetWater01());
         }
         public void Interact()
         {
@@ -139,8 +163,8 @@ namespace GameMechanics.Farming
 
         public Dictionary<string, object> GetPopupInfo() => new Dictionary<string, object>()
         {
-            {PopupInfoKeywords.SOIL_MOISTURE_01, .25f },
-            {PopupInfoKeywords.PLANT_GROWTH_01, GetGrowth01()},
+            { PopupInfoKeywords.SOIL_MOISTURE_01, GetWater01() },
+            { PopupInfoKeywords.PLANT_GROWTH_01, GetGrowth01() },
         };
     }
 }
