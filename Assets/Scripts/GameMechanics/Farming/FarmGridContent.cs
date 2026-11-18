@@ -5,6 +5,7 @@ using InventorySystem;
 using Popups;
 using Popups.Specific;
 using RuntimeGrid;
+using StatTracking;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -53,6 +54,8 @@ namespace GameMechanics.Farming
             PlantSO plantSO = GameDatabase.Instance.PlantDatabase.GetDataByID(plantID);
             growTime.Value = 0;
 
+            StatTrackingManager.Instance.IncrementStat(GameStats.CROPS_PLANTED);
+
             SetupPlantForUsersRpc(plantID);
         }
 
@@ -65,11 +68,17 @@ namespace GameMechanics.Farming
             growthVisuals = GameObject.Instantiate(plantSO.GrowthProgressObject, transform);
         }
 
-        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Server)]
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
         public void ClearPlantRpc()
         {
             if (!IsPlanted)
                 return;
+
+            if (IsReady)
+            {
+                ItemSpawnManager.SpawnItems(transform.position, plant.GetItemDrops());
+                StatTrackingManager.Instance.IncrementStat(GameStats.CROPS_GATHERED);
+            }
 
             ClearPlantForUsersRpc();
 
@@ -104,7 +113,6 @@ namespace GameMechanics.Farming
             if (!IsReady)
                 return;
 
-            ItemSpawnManager.SpawnItems(transform.position, plant.GetItemDrops());
             ClearPlantRpc();
         }
 

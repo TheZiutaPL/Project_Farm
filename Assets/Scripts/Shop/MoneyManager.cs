@@ -1,3 +1,4 @@
+using StatTracking;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace Shop
 {
     public class MoneyManager : NetworkBehaviour
     {
-        public static MoneyManager Instance;
+        public static MoneyManager Instance { get; private set; }
         private NetworkVariable<int> money = new NetworkVariable<int>();
 
         public static Action<int> OnMoneyChanged;
@@ -42,6 +43,8 @@ namespace Shop
                 return;
 
             money.Value += value;
+
+            StatTrackingManager.Instance.ChangeStat(GameStats.MONEY_GATHERED, value);
         }
 
         public void RemoveMoney(int value)
@@ -49,7 +52,12 @@ namespace Shop
             if (value < 0)
                 return;
 
-            money.Value = Mathf.Max(money.Value - value, 0);
+            int finalValue = Mathf.Max(money.Value - value, 0);
+            value = money.Value - finalValue;
+
+            money.Value = finalValue;
+
+            StatTrackingManager.Instance.ChangeStat(GameStats.MONEY_SPENT, value);
         }
     }
 }

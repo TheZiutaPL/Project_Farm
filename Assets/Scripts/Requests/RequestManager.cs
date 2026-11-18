@@ -1,6 +1,7 @@
 using Databases;
 using InventorySystem;
 using Shop;
+using StatTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,6 +142,8 @@ namespace Requests
                     // Set requestData completed
                     requestData.IsCompleted = true;
                     activeRequests.Set(index, requestData);
+
+                    StatTrackingManager.Instance.IncrementStat(GameStats.REQUEST_ITEMS_SUBMITTED);
                 }
             }
             // Fill up any active request
@@ -166,6 +169,8 @@ namespace Requests
                     // Set requestData completed
                     requestData.IsCompleted = true;
                     activeRequests.Set(i, requestData);
+
+                    StatTrackingManager.Instance.IncrementStat(GameStats.REQUEST_ITEMS_SUBMITTED);
                 }
             }
 
@@ -180,10 +185,13 @@ namespace Requests
 
                 Debug.Log($"Completed Request #{activeRequests[i].RequestID}");
                 activeRequests.RemoveAt(i);
+
                 moneyToAdd += 10;
             }
 
             MoneyManager.Instance.AddMoney(moneyToAdd);
+
+            StatTrackingManager.Instance.ChangeStat(GameStats.REQUESTS_COMPLETED, completedRequests.Count);
         }
 
         private List<int> CheckForCompletedRequests()

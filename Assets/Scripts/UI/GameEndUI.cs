@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine.UI;
 using GameLobby;
+using StatTracking;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class GameEndUI : NetworkBehaviour
@@ -36,7 +37,7 @@ public class GameEndUI : NetworkBehaviour
 
         // TODO alpha tween
 
-        statsText.SetText("TEMP_STATS");
+        statsText.SetText(StatTrackingManager.Instance.GetStatString());
         restartButton.gameObject.SetActive(IsHost);
     }
 

@@ -2,6 +2,7 @@ using InteractionSystem;
 using InventorySystem;
 using Popups;
 using Popups.Specific;
+using StatTracking;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -56,6 +57,8 @@ namespace Shop
 
             MoneyManager.Instance.RemoveMoney(soldItem.BuyPrice);
             networkPlayerInstance.Inventory.AddItem(soldItem);
+
+            StatTrackingManager.Instance.IncrementStat(GameStats.ITEMS_BOUGHT);
 
             popupInstance.RefreshPopup();
         }
