@@ -55,7 +55,7 @@ namespace PauseMenu
             PlayerInputs.Instance.SetInputActionMap(open ? ActionMaps.PauseMenu : PlayerInputs.Instance.CurrentDefaultMap);
         }
 
-        public void LeaveGame() => NetworkUtility.LeaveGame();
+        public void LeaveGame() => NetworkDisconnectionManager.LeaveGame();
 
         private void OnEnable()
         {

@@ -11,12 +11,14 @@ public class GameEndUI : NetworkBehaviour
     private CanvasGroup canvasGroup;
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button leaveButton;
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
 
         restartButton.onClick.AddListener(OnRestartButton);
+        leaveButton.onClick.AddListener(OnLeaveButton);
     }
 
     private void Start()
@@ -45,6 +47,11 @@ public class GameEndUI : NetworkBehaviour
 
         Debug.Log("Performing restart");
         NetworkManager.SceneManager.LoadScene(Constants.GAME_SCENE_NAME, UnityEngine.SceneManagement.LoadSceneMode.Single);
+    }
+
+    private void OnLeaveButton()
+    {
+        NetworkDisconnectionManager.LeaveGame();
     }
 
     private void OnEnable()
