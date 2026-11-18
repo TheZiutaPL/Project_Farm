@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace GameLobby
 {
@@ -50,6 +51,9 @@ namespace GameLobby
         public bool IsInLobby => JoinedLobby != null && JoinedLobby.Players != null;
         public bool IsLobbyHost => IsInLobby && JoinedLobby.HostId == AuthenticationService.Instance.PlayerId;
 
+        public const string PLAYER_NAME_DATA_KEY = "_playerName";
+        public const string PLAYER_READY_DATA_KEY = "_isReady";
+
         private void Awake()
         {
             if (Instance == null)
@@ -73,7 +77,8 @@ namespace GameLobby
         {
             Data = new Dictionary<string, PlayerDataObject>()
         {
-            { "_playerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, defaultPlayerName) }
+            { PLAYER_NAME_DATA_KEY, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, defaultPlayerName) },
+            { PLAYER_READY_DATA_KEY, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, false.ToString())},
         }
         };
 
@@ -212,11 +217,43 @@ namespace GameLobby
             }
         }
 
+        public void PromoteToHost(string playerID)
+        {
+            if (!IsLobbyHost || AuthenticationService.Instance.PlayerId == playerID)
+                return;
+
+            UpdateLobby(new UpdateLobbyOptions()
+            {
+                HostId = playerID,
+            });
+        }
+
         public async void UpdateLobby(UpdateLobbyOptions options)
         {
             try
             {
                 await LobbyService.Instance.UpdateLobbyAsync(JoinedLobby.Id, options);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+
+        public void UpdatePlayerData(params (string key, object value)[] data)
+        {
+            UpdatePlayerOptions options = new UpdatePlayerOptions
+            {
+                Data = data.ToDictionary(x => x.key, x => new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, x.value.ToString()))
+            };
+
+            UpdatePlayer(options);
+        }
+        public async void UpdatePlayer(UpdatePlayerOptions options)
+        {
+            try
+            {
+                await LobbyService.Instance.UpdatePlayerAsync(JoinedLobby.Id, AuthenticationService.Instance.PlayerId, options);
             }
             catch (LobbyServiceException e)
             {
@@ -384,6 +421,19 @@ namespace GameLobby
         {
             if (!IsLobbyHost)
                 return;
+
+            foreach (Player player in JoinedLobby.Players)
+            {
+                // Host doesn't need to be ready
+                if (player.Id == joinedLobby.HostId)
+                    continue;
+
+                if (!player.Data.TryGetValue(PLAYER_READY_DATA_KEY, out PlayerDataObject data))
+                    return;
+
+                if (!bool.TryParse(data.Value, out bool ready) || !ready)
+                    return;
+            }
 
             Debug.Log("Starting game...");
             NetworkManager.Singleton.SceneManager.LoadScene(Constants.GAME_SCENE_NAME, LoadSceneMode.Single);
