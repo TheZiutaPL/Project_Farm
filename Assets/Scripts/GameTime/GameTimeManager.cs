@@ -1,3 +1,4 @@
+using PauseMenu;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace GameTime
         private const int HOURS_PER_DAY = 24;
 
         private bool gameTimePassed = false;
+        public bool HasGameEnded => gameTimePassed;
 
         public static Action<float> OnGameTimePassed;
         public static Action OnGameTimeEnded;
@@ -108,6 +110,10 @@ namespace GameTime
         private void OnGameTimePassedRpc()
         {
             Debug.Log("Game Time Ended");
+
+            if(!PauseMenu.PauseMenu.IsOpen)
+                PlayerInputs.Instance.SetInputActionMap(ActionMaps.None);
+
             OnGameTimeEnded?.Invoke();
         }
 
