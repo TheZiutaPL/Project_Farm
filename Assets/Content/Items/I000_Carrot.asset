@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ItemID>k__BackingField: 0
   <ItemName>k__BackingField: Carrot
-  <ItemSprite>k__BackingField: {fileID: 21300000, guid: 472547605d8e239409b89d3bf2d81a59, type: 3}
+  <ItemSprite>k__BackingField: {fileID: 21300000, guid: 559095a0b4b1d8a4f904df92d0af28ea, type: 3}
+  <BuyPrice>k__BackingField: 0
