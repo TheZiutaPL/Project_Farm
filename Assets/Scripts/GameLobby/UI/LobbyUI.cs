@@ -81,11 +81,17 @@ namespace GameLobby.UI
 
         public void LeaveLobby()
         {
+            if (!LobbyManager.IsSignedIn)
+                return;
+
             LobbyManager.Instance.LeaveLobby();
         }
 
         public void StartGame()
         {
+            if (!LobbyManager.IsSignedIn)
+                return;
+
             LobbyManager.Instance.StartGame();
         }
     }
