@@ -3160,6 +3160,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5843280465421677393, guid: 733a834cd4d543f4f845ffcc69aa6440, type: 3}
   m_PrefabInstance: {fileID: 91257398}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1039945709 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3881752357787896245, guid: 733a834cd4d543f4f845ffcc69aa6440, type: 3}
+  m_PrefabInstance: {fileID: 91257398}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1041089221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6366,6 +6377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyItemParent: {fileID: 1079618065}
   lobbyItemPrefab: {fileID: -6824316690401463016, guid: 3f762504d16f83f4eaf7d7730d816440, type: 3}
+  searchBar: {fileID: 1039945709}
 --- !u!1 &2003000728
 GameObject:
   m_ObjectHideFlags: 0
