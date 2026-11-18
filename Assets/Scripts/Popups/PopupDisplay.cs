@@ -61,7 +61,7 @@ namespace Popups
             transform.position = NetworkPlayerInstance.OwnerInstance.PlayerCameraHandler.PlayerCamera.WorldToScreenPoint(popable.Position);
         }
 
-        protected void RefreshPopup()
+        public void RefreshPopup()
         {
             if (popable == null || !UtilityMethods.IsInterfaceValid(popable))
             {

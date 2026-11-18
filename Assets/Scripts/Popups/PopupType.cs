@@ -8,5 +8,6 @@ namespace Popups
 
         Plant = 5,
         Request = 6,
+        Shop = 7,
     }
 }

@@ -9,5 +9,7 @@ namespace Popups.Specific
 
         public const string REQUEST_ITEM_ARRAY = "_requestItems";
         public const string REQUEST_ITEM_COMPLETED_LIST = "_requestItemsCompleted";
+
+        public const string SHOP_ITEM = "_shopItem";
     }
 }

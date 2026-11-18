@@ -14,6 +14,8 @@ namespace InventorySystem
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public Sprite ItemSprite { get; private set; }
 
+        [field: SerializeField] public int BuyPrice { get; private set; }
+
         public void UseItem(Vector2Int cellPosition)
         {
             RuntimeGridInstance.Instance.UseItemOnGridRpc(cellPosition, ItemID);

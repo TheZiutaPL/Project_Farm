@@ -13,11 +13,13 @@ namespace Popups
         [SerializeField] private PopupDisplay headerPopupPrefab; 
         [SerializeField] private PopupDisplay plantPopupPrefab;
         [SerializeField] private PopupDisplay requestPopupPrefab;
+        [SerializeField] private PopupDisplay shopPopupDisplay;
         private PopupDisplay GetPrefabForPopupType(PopupType popupType) => popupType switch
         {
             PopupType.Header => headerPopupPrefab,
             PopupType.Plant => plantPopupPrefab,
             PopupType.Request => requestPopupPrefab,
+            PopupType.Shop => shopPopupDisplay,
             _ => throw new System.NotImplementedException(),
         };
 

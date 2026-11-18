@@ -51,6 +51,22 @@ namespace InventorySystem
             return null;
         }
 
+        public bool HasEmptySlot()
+        {
+            if (inventory.Count < InventorySize)
+                return true;
+
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] >= 0)
+                    continue;
+
+                return true;
+            }
+
+            return false;
+        }
+
         public Action<(int changedSlot, InventoryItemSO newItem)> OnInventorySlotChange;
         public Action<Inventory> OnInventoryUpdate;
         public Action<InventoryItemSO> OnItemAdded;

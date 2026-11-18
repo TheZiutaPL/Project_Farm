@@ -1,5 +1,6 @@
 using Databases;
 using InventorySystem;
+using Shop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -168,6 +169,8 @@ namespace Requests
                 }
             }
 
+            int moneyToAdd = 0;
+
             // Check if there are completed orders
             List<int> completedRequests = CheckForCompletedRequests();
             for (int i = activeRequests.Count - 1; i >= 0; i--)
@@ -177,7 +180,10 @@ namespace Requests
 
                 Debug.Log($"Completed Request #{activeRequests[i].RequestID}");
                 activeRequests.RemoveAt(i);
+                moneyToAdd += 10;
             }
+
+            MoneyManager.Instance.AddMoney(moneyToAdd);
         }
 
         private List<int> CheckForCompletedRequests()
