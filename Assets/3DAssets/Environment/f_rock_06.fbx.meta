@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 9ba0cb2aa52078443bf5f0627260d0a7
+guid: ab76c5859e59f2c419dc357ce75f0dfa
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_rock_01.001
+    second: {fileID: 2100000, guid: ed1cd48cf3d64b746bccdc0410c03155, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

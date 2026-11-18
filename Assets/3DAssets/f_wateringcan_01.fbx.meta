@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 97e07f68e9350be4b96e0947a753f993
+guid: 3a8251cab1118f64b945908dee4a1e89
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_color_palette_01
+    second: {fileID: 2100000, guid: 1d01fe3fcf6423f4690b7f175ba6fb69, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
