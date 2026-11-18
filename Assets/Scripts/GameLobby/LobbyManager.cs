@@ -72,12 +72,11 @@ namespace GameLobby
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 
-        [SerializeField] private string defaultPlayerName = "Disarmed Cookie";
         private Player GetPlayerData() => new Player(AuthenticationService.Instance.PlayerId)
         {
             Data = new Dictionary<string, PlayerDataObject>()
         {
-            { PLAYER_NAME_DATA_KEY, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, defaultPlayerName) },
+            { PLAYER_NAME_DATA_KEY, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerNameManager.PlayerName) },
             { PLAYER_READY_DATA_KEY, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, false.ToString())},
         }
         };
