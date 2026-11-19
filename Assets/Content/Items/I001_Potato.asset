@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 835ef8cb186f5d64ab4db9c9b5b4ec10, type: 3}
-  m_Name: I001_Pumpkin
+  m_Name: I001_Potato
   m_EditorClassIdentifier: 
   <ItemID>k__BackingField: 1
-  <ItemName>k__BackingField: Pumpkin
-  <ItemSprite>k__BackingField: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  <ItemName>k__BackingField: Potato
+  <ItemSprite>k__BackingField: {fileID: 21300000, guid: ca2126467699b624bb39c11f4d28aa6f, type: 3}
+  <BuyPrice>k__BackingField: 0

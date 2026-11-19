@@ -85,8 +85,13 @@ namespace GameLobby.UI
                 if (player.Id == lobby.HostId)
                     continue;
 
-                if (player.Data.TryGetValue(LobbyManager.PLAYER_READY_DATA_KEY, out PlayerDataObject readyObj) &&
-                    bool.TryParse(readyObj.Value, out bool ready) && ready)
+                bool isPlayerReady = player.Data.TryGetValue(LobbyManager.PLAYER_READY_DATA_KEY, out PlayerDataObject readyObj) &&
+                    bool.TryParse(readyObj.Value, out bool ready) && ready;
+
+                if (player.Id == AuthenticationService.Instance.PlayerId)
+                    readyToggle.SetIsOnWithoutNotify(isPlayerReady);
+
+                if (isPlayerReady)
                     continue;
 
                 canStartGame = false;

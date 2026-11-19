@@ -227,7 +227,7 @@ namespace GameLobby
             });
         }
 
-        public async void UpdateLobby(UpdateLobbyOptions options)
+        public async Task UpdateLobby(UpdateLobbyOptions options)
         {
             try
             {
@@ -239,16 +239,16 @@ namespace GameLobby
             }
         }
 
-        public void UpdatePlayerData(params (string key, object value)[] data)
+        public async Task UpdatePlayerData(params (string key, object value)[] data)
         {
             UpdatePlayerOptions options = new UpdatePlayerOptions
             {
                 Data = data.ToDictionary(x => x.key, x => new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, x.value.ToString()))
             };
 
-            UpdatePlayer(options);
+            await UpdatePlayer(options);
         }
-        public async void UpdatePlayer(UpdatePlayerOptions options)
+        public async Task UpdatePlayer(UpdatePlayerOptions options)
         {
             try
             {
@@ -309,7 +309,7 @@ namespace GameLobby
 
                 string relayCode = await RelayManager.CreateRelay();
 
-                UpdateLobby(new UpdateLobbyOptions()
+                _ = UpdateLobby(new UpdateLobbyOptions()
                 {
                     Data = new Dictionary<string, DataObject>()
                 {
@@ -379,14 +379,17 @@ namespace GameLobby
                     changes.ApplyToLobby(JoinedLobby);
                     OnLobbyUpdated?.Invoke(JoinedLobby);
 
+                    if(changes.HostId.Changed)
+                        await UpdatePlayerData((PLAYER_READY_DATA_KEY, false.ToString()));
+
                     // If changed host
-                    if (changes.HostId.Changed && JoinedLobby.HostId == AuthenticationService.Instance.PlayerId)
+                    if (changes.HostId.Changed && changes.HostId.Value == AuthenticationService.Instance.PlayerId)
                     {
                         // Start new relay
                         string relayCode = await RelayManager.CreateRelay();
 
                         // Update lobby's relay code
-                        UpdateLobby(new UpdateLobbyOptions()
+                        _ = UpdateLobby(new UpdateLobbyOptions()
                         {
                             Data = new Dictionary<string, DataObject>()
                         {

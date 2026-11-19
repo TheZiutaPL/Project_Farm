@@ -10,6 +10,8 @@ public class RelayManager : MonoBehaviour
 {
     public static async Task<string> CreateRelay()
     {
+        await Shutdown();
+
         try
         {
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(1);
@@ -37,6 +39,8 @@ public class RelayManager : MonoBehaviour
 
     public static async Task JoinRelay(string joinCode)
     {
+        await Shutdown();
+
         try
         {
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
@@ -54,6 +58,19 @@ public class RelayManager : MonoBehaviour
         catch (RelayServiceException e)
         {
             Debug.Log(e);
+        }
+    }
+
+    private static async Task Shutdown()
+    {
+        if (NetworkManager.Singleton == null || NetworkManager.Singleton.ShutdownInProgress)
+            return;
+
+        NetworkManager.Singleton.Shutdown();
+
+        while(NetworkManager.Singleton.ShutdownInProgress)
+        {
+            await Task.Delay(100);
         }
     }
 }

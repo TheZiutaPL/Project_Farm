@@ -52,6 +52,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: a16bb5f8742c3cf45a200f55ad6df436, type: 2}
     - {fileID: 11400000, guid: 6a3e830f2e977e043a63edb5841b51a9, type: 2}
     - {fileID: 11400000, guid: 193639cd5274135499954d79382ac02d, type: 2}
+    - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
+    - {fileID: 11400000, guid: 5ec5bd8b502ab3144ba881aaaa9e9cd2, type: 2}
   <PlantDatabase>k__BackingField:
     includedData:
     - {fileID: 11400000, guid: c18d24cf116fd5c4da308add8572d9ed, type: 2}
+    - {fileID: 11400000, guid: a7116a94b6c3d4948975e0cdf6fdef36, type: 2}
+    - {fileID: 11400000, guid: b6147d55f6365e64fb920306a6d667ac, type: 2}
