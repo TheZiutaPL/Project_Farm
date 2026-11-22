@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2449478147014726433}
+  - component: {fileID: 6026064575449176151}
   m_Layer: 0
   m_Name: Mill_01
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 5603910558562863607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6026064575449176151
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634685410516408276}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.035803, y: 1.3712225, z: 2.035803}
+  m_Center: {x: 0, y: 0.68561125, z: 0}
 --- !u!1001 &5354691494216085020
 PrefabInstance:
   m_ObjectHideFlags: 0

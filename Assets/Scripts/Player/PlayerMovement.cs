@@ -14,6 +14,7 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Visuals")]
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Animator animator;
+    [SerializeField] private float minSpeedToWalkAnimation = .05f;
 
     private const string ANIM_PLAYER_IS_WALKING = "_isWalking";
     private const string ANIM_PLAYER_WALKING_SPEED = "_walkingSpeed";
@@ -61,8 +62,10 @@ public class PlayerMovement : NetworkBehaviour
 
     private void PerformPlayerAnimationUpdate()
     {
-        animator.SetBool(ANIM_PLAYER_IS_WALKING, movementDirection != Vector3.zero);
-        animator.SetFloat(ANIM_PLAYER_WALKING_SPEED, rb.linearVelocity.magnitude / movementSpeed);
+        float walkingSpeed = rb.linearVelocity.magnitude / movementSpeed;
+
+        animator.SetBool(ANIM_PLAYER_IS_WALKING, movementDirection != Vector3.zero && walkingSpeed >= minSpeedToWalkAnimation);
+        animator.SetFloat(ANIM_PLAYER_WALKING_SPEED, walkingSpeed);
     }
 
     private void FixedUpdate()

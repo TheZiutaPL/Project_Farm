@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6360742494049324612}
+  - component: {fileID: 1340082652813352464}
   m_Layer: 0
   m_Name: Firecamp_01
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 5938593973168062533}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1340082652813352464
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3909772134847729443}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2927902, y: 1.4254051, z: 1.5744206}
+  m_Center: {x: 0, y: 0.7127026, z: 0}
 --- !u!1001 &6188129215821916078
 PrefabInstance:
   m_ObjectHideFlags: 0

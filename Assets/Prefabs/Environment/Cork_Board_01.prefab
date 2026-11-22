@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7971487342045734030}
+  - component: {fileID: 363871149066402283}
   m_Layer: 0
   m_Name: Cork_Board_01
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 3660486659516970675}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &363871149066402283
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391056874622132544}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2758563, y: 2.2089262, z: 0.25061762}
+  m_Center: {x: 0, y: 1.1044631, z: 0}
 --- !u!1001 &3838773618690347352
 PrefabInstance:
   m_ObjectHideFlags: 0
