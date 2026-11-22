@@ -74,6 +74,8 @@ namespace InventorySystem
 
         public int SelectedSlotIndex { get; private set; }
         public Action<int> OnSelectedSlotIndexChanged;
+
+        public InventoryItemSO GetSelectedItem() => GetItemAtSlot(SelectedSlotIndex);
         
         public void ChangeSelectedSlotIndex(int newSelectedSlotIndex)
         {
