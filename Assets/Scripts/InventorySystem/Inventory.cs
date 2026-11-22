@@ -258,8 +258,10 @@ namespace InventorySystem
             if (item == null)
                 return;
 
-            Vector2Int cellPosition = NetworkPlayerInstance.OwnerInstance.GridInteractor.selectedCell.Value;
+            if (!NetworkPlayerInstance.OwnerInstance.GridInteractor.CanInteractWithCell())
+                return;
 
+            Vector2Int cellPosition = NetworkPlayerInstance.OwnerInstance.GridInteractor.SelectedCell.Value;
             item.UseItem(cellPosition);
         }
     }

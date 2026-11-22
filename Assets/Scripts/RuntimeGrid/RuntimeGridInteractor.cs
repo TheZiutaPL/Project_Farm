@@ -5,10 +5,21 @@ namespace RuntimeGrid
 {
     public class RuntimeGridInteractor : NetworkBehaviour
     {
-        public NetworkVariable<Vector2Int> selectedCell = new NetworkVariable<Vector2Int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector2Int> SelectedCell = new NetworkVariable<Vector2Int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [SerializeField] private GameObject selectionObjectPrefab;
         private Transform selectionObject;
+
+        [SerializeField] private float interactionRange = 2.5f;
+        public bool CanInteractWithCell() => CanInteractWithCell(SelectedCell.Value);
+        public bool CanInteractWithCell(Vector2Int cellPosition)
+        {
+            if (!RuntimeGridInstance.Instance.HasRuntimeCell(cellPosition))
+                return false;
+
+            Vector3 worldPos = RuntimeGridInstance.Instance.CellToWorldPosition(cellPosition);
+            return Vector3.Distance(transform.position, worldPos) <= interactionRange;
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -17,7 +28,7 @@ namespace RuntimeGrid
 
             selectionObject = Instantiate(selectionObjectPrefab).transform;
 
-            selectedCell.OnValueChanged += OnChangedCell;
+            SelectedCell.OnValueChanged += OnChangedCell;
         }
 
         public override void OnNetworkDespawn()
@@ -25,7 +36,7 @@ namespace RuntimeGrid
             if (!IsOwner)
                 return;
 
-            selectedCell.OnValueChanged -= OnChangedCell;
+            SelectedCell.OnValueChanged -= OnChangedCell;
         }
 
         private void Update()
@@ -58,12 +69,13 @@ namespace RuntimeGrid
             // Calculate cell position
             Vector2Int currentSelected = RuntimeGridInstance.Instance.WorldToCellPosition(worldPointPosition);
 
-            if (currentSelected != selectedCell.Value)
-                selectedCell.Value = currentSelected;
+            if (currentSelected != SelectedCell.Value)
+                SelectedCell.Value = currentSelected;
         }
 
         private void OnChangedCell(Vector2Int previousValue, Vector2Int newValue)
         {
+            selectionObject.gameObject.SetActive(CanInteractWithCell(newValue));
             selectionObject.position = RuntimeGridInstance.Instance.CellToWorldPosition(newValue);
         }
     }

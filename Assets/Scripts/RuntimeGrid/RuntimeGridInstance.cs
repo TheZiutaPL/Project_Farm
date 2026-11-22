@@ -39,6 +39,9 @@ namespace RuntimeGrid
         public Vector2Int WorldToCellPosition(Vector3 worldPosition) => (Vector2Int)grid.WorldToCell(worldPosition + grid.cellSize / 2);
         public Vector3 CellToWorldPosition(Vector2Int cellPosition) => grid.CellToWorld((Vector3Int)cellPosition);
 
+        public bool HasRuntimeCell(Vector3 worldPosition) => HasRuntimeCell(WorldToCellPosition(worldPosition));
+        public bool HasRuntimeCell(Vector2Int cellPosition) => gridCells.ContainsKey(cellPosition);
+
         public RuntimeCell GetRuntimeCell(Vector3 worldPosition)
         {
             if (!TryGetRuntimeCell(worldPosition, out RuntimeCell cell))
