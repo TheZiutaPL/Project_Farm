@@ -52,7 +52,7 @@ MonoBehaviour:
   Ownership: 8
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -80,4 +80,4 @@ MonoBehaviour:
     m_InternalValue: 0
   startHour: 6
   gameHours: 16
-  gameMinutesPerSecond: 5
+  gameMinutesPerSecond: 2

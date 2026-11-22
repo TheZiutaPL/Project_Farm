@@ -45,14 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3643679199
+  GlobalObjectIdHash: 3141149120
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -74,4 +74,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   maxActiveRequests: 3
-  requestWaitTime: 12
+  requestWaitTimeMinutes: 60
+  minMaxRequestedItems: {x: 2, y: 5}
+  requestableItems:
+  - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+  - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+  - {fileID: 11400000, guid: 41e1b3ce017356d41bf103f0f9d3d162, type: 2}

@@ -163,6 +163,7 @@ namespace GameMechanics.Farming
 
         public Dictionary<string, object> GetPopupInfo() => new Dictionary<string, object>()
         {
+            { PopupInfoKeywords.PLANT_SPRITE, plant != null ? plant.PlantSprite : null },
             { PopupInfoKeywords.SOIL_MOISTURE_01, GetWater01() },
             { PopupInfoKeywords.PLANT_GROWTH_01, GetGrowth01() },
         };

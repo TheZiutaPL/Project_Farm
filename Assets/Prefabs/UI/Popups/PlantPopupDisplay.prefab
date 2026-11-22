@@ -55,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   refreshTime: 0.6
   popupNameText: {fileID: 602285758600387576}
+  plantImage: {fileID: 5945764880713659924}
   soilMoistureSlider: {fileID: 6015493185655826963}
   plantGrowthSlider: {fileID: 7680424371434745604}
   growingGroup: {fileID: 7849382491499161081}

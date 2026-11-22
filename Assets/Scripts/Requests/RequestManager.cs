@@ -1,4 +1,5 @@
 using Databases;
+using GameTime;
 using InventorySystem;
 using Shop;
 using StatTracking;
@@ -16,7 +17,7 @@ namespace Requests
         public static RequestManager Instance { get; private set; }
 
         [SerializeField] private int maxActiveRequests = 3;
-        [SerializeField] private float requestWaitTime = 12f;
+        [SerializeField] private int requestWaitTimeMinutes = 30;
         private float requestTimer;
 
         private NetworkList<RequestData> activeRequests = new NetworkList<RequestData>();
@@ -47,32 +48,32 @@ namespace Requests
 
             if (Instance == null)
                 Instance = this;
+
+            GameTimeManager.OnGameTimePassed += OnTimePassed;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            GameTimeManager.OnGameTimePassed -= OnTimePassed;
         }
 
         private void RequestsUpdated(NetworkListEvent<RequestData> changeEvent)
         {
             if (IsServer)
-                requestTimer = requestWaitTime;
+                requestTimer = requestWaitTimeMinutes;
 
             OnRequestsUpdated?.Invoke();
         }
 
-        private void Update()
+        private void OnTimePassed(float time)
         {
             if (!IsServer || Instance != this)
                 return;
 
-            HandleRequestUpdate();
-        }
-
-        private void HandleRequestUpdate()
-        {
-            requestTimer -= Time.deltaTime;
+            requestTimer -= time;
 
             if (requestTimer <= 0)
             {
-                requestTimer = requestWaitTime;
-
                 // If requests are full
                 if (GetActiveRequestIDs().Count >= maxActiveRequests)
                     return;

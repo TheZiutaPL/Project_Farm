@@ -8,6 +8,7 @@ namespace Popups.Specific
     public class PlantPopupDisplay : PopupDisplay
     {
         [SerializeField] private TextMeshProUGUI popupNameText;
+        [SerializeField] private Image plantImage;
         [SerializeField] private Slider soilMoistureSlider;
         [SerializeField] private Slider plantGrowthSlider;
         [SerializeField] private GameObject growingGroup;
@@ -18,9 +19,20 @@ namespace Popups.Specific
             popupNameText.SetText(popupName);
 
             if (popupInfo == null)
+            {
+                plantImage.sprite = null;
                 return;
+            }
 
-            if(popupInfo.TryGetValue(PopupInfoKeywords.SOIL_MOISTURE_01, out object moisture))
+            if (popupInfo.TryGetValue(PopupInfoKeywords.PLANT_SPRITE, out object sprite))
+            {
+                Sprite spr = (Sprite)sprite;
+                plantImage.sprite = spr;
+            }
+            else
+                plantImage.sprite = null;
+
+            if (popupInfo.TryGetValue(PopupInfoKeywords.SOIL_MOISTURE_01, out object moisture))
             {
                 float moisture01 = (float)moisture;
                 soilMoistureSlider.value = moisture01;
@@ -34,7 +46,7 @@ namespace Popups.Specific
                 bool ready = growth01 >= 1;
                 growingGroup.SetActive(!ready);
                 readyGroup.SetActive(ready);
-            }
+            }            
         }
     }
 }
