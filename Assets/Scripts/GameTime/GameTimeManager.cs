@@ -16,6 +16,8 @@ namespace GameTime
         [SerializeField] private float gameHours = 16;
         [SerializeField] private float gameMinutesPerSecond = 1;
 
+        public float GetGameHours() => gameHours;
+
         private const int MINUTES_PER_HOUR = 60;
         private const int HOURS_PER_DAY = 24;
 
@@ -65,7 +67,7 @@ namespace GameTime
             return (hoursPassed, minutesPassed);
         }
 
-        public override void OnNetworkSpawn()
+        private void Awake()
         {
             if (Instance == null)
                 Instance = this;

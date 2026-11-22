@@ -15,5 +15,5 @@ MonoBehaviour:
   <ItemID>k__BackingField: 6
   <ItemName>k__BackingField: Potato Seeds
   <ItemSprite>k__BackingField: {fileID: 21300000, guid: 2d5aa9e2588d79246a1000640d443675, type: 3}
-  <BuyPrice>k__BackingField: 2
+  <BuyPrice>k__BackingField: 3
   plant: {fileID: 11400000, guid: a7116a94b6c3d4948975e0cdf6fdef36, type: 2}

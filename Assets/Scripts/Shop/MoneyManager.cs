@@ -8,7 +8,8 @@ namespace Shop
     public class MoneyManager : NetworkBehaviour
     {
         public static MoneyManager Instance { get; private set; }
-        private NetworkVariable<int> money = new NetworkVariable<int>();
+
+        private NetworkVariable<int> money = new NetworkVariable<int>(Constants.START_MONEY);
 
         public static Action<int> OnMoneyChanged;
         public static int GetMoney() => Instance != null ? Instance.money.Value : 0;

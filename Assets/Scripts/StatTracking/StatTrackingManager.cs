@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Unity.Netcode;
@@ -44,6 +45,8 @@ namespace StatTracking
             return -1;
         }
 
+        public static Action<GameStats, int> OnStatUpdated;
+
         private void Awake()
         {
             if(Instance == null)
@@ -53,6 +56,9 @@ namespace StatTracking
                 Destroy(gameObject);
                 return;
             }
+
+            for (int i = 0; i < statsUnits.Count; i++)
+                OnStatUpdated?.Invoke(statsUnits[i].gameStat, statsUnits[i].statValue);
         }
 
         public void IncrementStat(GameStats stat, bool decrement = false)
@@ -68,6 +74,8 @@ namespace StatTracking
                 current.statValue--;
 
             statsUnits[index] = current;
+
+            StatUpdateRpc(current);
         }
         public void ChangeStat(GameStats stat, int change)
         {
@@ -78,6 +86,23 @@ namespace StatTracking
             current.statValue += change;
 
             statsUnits[index] = current;
+
+            StatUpdateRpc(current);
+        }
+
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        private void StatUpdateRpc(params GameStatUnit[] updatedStats)
+        {
+            for (int i = 0; i < updatedStats.Length; i++)
+                OnStatUpdated?.Invoke(updatedStats[i].gameStat, updatedStats[i].statValue);
+        }
+
+        public int GetStat(GameStats stat)
+        {
+            if (!FindStatUnitIndex(stat, out int index))
+                return -1;
+
+            return statsUnits[index].statValue;
         }
 
         public string GetStatString()

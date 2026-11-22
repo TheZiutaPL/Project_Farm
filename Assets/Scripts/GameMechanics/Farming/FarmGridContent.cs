@@ -87,7 +87,7 @@ namespace GameMechanics.Farming
 
             if (IsReady)
             {
-                ItemSpawnManager.SpawnItems(transform.position, plant.GetItemDrops());
+                ItemSpawnManager.SpawnItems(transform.position, plant.GetRandomDrops());
                 StatTrackingManager.Instance.IncrementStat(GameStats.CROPS_GATHERED);
             }
 

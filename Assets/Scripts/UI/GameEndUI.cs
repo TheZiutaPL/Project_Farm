@@ -3,13 +3,15 @@ using GameTime;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine.UI;
-using GameLobby;
 using StatTracking;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class GameEndUI : NetworkBehaviour
 {
     private CanvasGroup canvasGroup;
+    [SerializeField] private TextMeshProUGUI endText;
+    [SerializeField] private string winMessage = "YOU WON";
+    [SerializeField] private string loseMessage = "YOU LOST";
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button leaveButton;
@@ -36,6 +38,9 @@ public class GameEndUI : NetworkBehaviour
         canvasGroup.blocksRaycasts = true;
 
         // TODO alpha tween
+
+        bool winCondition = StatTrackingManager.Instance.GetStat(GameStats.REQUESTS_COMPLETED) >= Constants.REQUIRED_REQUESTS_TO_WIN;
+        endText.SetText(winCondition ? winMessage : loseMessage);
 
         statsText.SetText(StatTrackingManager.Instance.GetStatString());
         restartButton.gameObject.SetActive(IsHost);

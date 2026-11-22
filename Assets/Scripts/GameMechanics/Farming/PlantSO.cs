@@ -20,7 +20,21 @@ namespace GameMechanics.Farming
 
         [Header("Rewards")]
         [SerializeField] private InventoryItemSO[] itemDrops = new InventoryItemSO[0];
+        [SerializeField] private int minDrops = 2;
+        [SerializeField] private int maxDrops = 3;
 
         public InventoryItemSO[] GetItemDrops() => itemDrops;
+        public InventoryItemSO[] GetRandomDrops()
+        {
+            int totalDrops = Random.Range(minDrops, maxDrops);
+
+            InventoryItemSO[] drops = new InventoryItemSO[totalDrops];
+            for (int i = 0; i < drops.Length; i++)
+            {
+                drops[i] = itemDrops[Random.Range(0, itemDrops.Length)];
+            }
+
+            return drops;
+        }
     }
 }

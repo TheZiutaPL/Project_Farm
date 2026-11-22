@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: P001_PotatoPlant
   m_EditorClassIdentifier: 
   <PlantID>k__BackingField: 2
-  <PlantName>k__BackingField: Potato Plant
+  <PlantName>k__BackingField: Potato
   <PlantSprite>k__BackingField: {fileID: 21300000, guid: ca2126467699b624bb39c11f4d28aa6f, type: 3}
-  <GrowthTime>k__BackingField: 50
+  <GrowthTime>k__BackingField: 120
   <GrowthProgressObject>k__BackingField: {fileID: 352321720738212858, guid: f479f61b2afc3cb4bb7ab4b41317acfe, type: 3}
   itemDrops:
   - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
-  - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
-  - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
-  - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
-  - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
+  - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+  - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+  - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+  minDrops: 2
+  maxDrops: 3

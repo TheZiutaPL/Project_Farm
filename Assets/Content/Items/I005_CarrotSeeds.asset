@@ -15,5 +15,5 @@ MonoBehaviour:
   <ItemID>k__BackingField: 5
   <ItemName>k__BackingField: Carrot Seeds
   <ItemSprite>k__BackingField: {fileID: 21300000, guid: 2d5aa9e2588d79246a1000640d443675, type: 3}
-  <BuyPrice>k__BackingField: 2
+  <BuyPrice>k__BackingField: 3
   plant: {fileID: 11400000, guid: c18d24cf116fd5c4da308add8572d9ed, type: 2}
