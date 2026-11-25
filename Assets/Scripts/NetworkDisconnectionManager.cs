@@ -20,12 +20,18 @@ public class NetworkDisconnectionManager : NetworkBehaviour
 
     private void OnEnable()
     {
+        if (NetworkManager.Singleton == null)
+            return;
+
         NetworkManager.OnTransportFailure += OnTransportFailure;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnTransportFailure -= OnTransportFailure;
+        if (NetworkManager.Singleton == null)
+            return;
+
+        NetworkManager.Singleton.OnTransportFailure -= OnTransportFailure;
     }
 
     public static void LeaveGame()
