@@ -27,6 +27,8 @@ namespace Requests
         [SerializeField] private InventoryItemSO[] requestableItems = new InventoryItemSO[0];
         private int requestIndex;
 
+        private int currentRequests;
+
         public HashSet<int> GetActiveRequestIDs()
         {
             HashSet<int> requestIDs = new HashSet<int>();
@@ -59,7 +61,13 @@ namespace Requests
 
         private void RequestsUpdated(NetworkListEvent<RequestData> changeEvent)
         {
-            if (IsServer)
+            currentRequests = GetActiveRequestIDs().Count;
+
+            bool addedNewRequest =
+                changeEvent.Type == NetworkListEvent<RequestData>.EventType.Add ||
+                changeEvent.Type == NetworkListEvent<RequestData>.EventType.Insert;
+
+            if (addedNewRequest && IsServer)
                 requestTimer = requestWaitTimeMinutes;
 
             OnRequestsUpdated?.Invoke();
@@ -70,12 +78,16 @@ namespace Requests
             if (!IsServer || Instance != this)
                 return;
 
+            if (currentRequests >= maxActiveRequests)
+                return;
+
             requestTimer -= time;
 
             if (requestTimer <= 0)
             {
                 // If requests are full
-                if (GetActiveRequestIDs().Count >= maxActiveRequests)
+                currentRequests = GetActiveRequestIDs().Count;
+                if (currentRequests >= maxActiveRequests)
                     return;
 
                 CreateNewRequest();
