@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4042843895
+  GlobalObjectIdHash: 2318502298
   InScenePlacedSourceGlobalObjectIdHash: 4042843895
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -74,4 +74,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   playerObjectPrefab: {fileID: 8844623256666700542, guid: 7d3bffbaa9320b54791b9f5b8a0d218a, type: 3}
-  spawnPlayersSeparately: 0
+  maxPlayersSpawnedInRow: 4
+  spawnDistance: 1.03
