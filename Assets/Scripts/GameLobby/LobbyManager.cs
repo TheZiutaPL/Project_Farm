@@ -69,7 +69,8 @@ namespace GameLobby
             AuthenticationService.Instance.SignedIn += OnSignIn;
 
             // For now the player is signed anonymously
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            if(!AuthenticationService.Instance.IsSignedIn)
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 
         private Player GetPlayerData() => new Player(AuthenticationService.Instance.PlayerId)
@@ -446,6 +447,8 @@ namespace GameLobby
 
         private void OnDestroy()
         {
+            AuthenticationService.Instance.SignedIn -= OnSignIn;
+
             UnsubscribeFromLobbyEvents();
         }
     }

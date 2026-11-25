@@ -84,5 +84,11 @@ namespace InventorySystem.UI
             networkPlayer.Inventory.OnSelectedSlotIndexChanged -= OnSlotChanged;
             networkPlayer.Inventory.OnInventorySlotChange -= OnAddedItem;
         }
+
+        private void OnDestroy()
+        {
+            NetworkPlayerInstance.OnOwnerInstanceAssigned -= OnAssigned;
+            NetworkPlayerInstance.OnOwnerInstanceUnassigned -= OnUnassigned;
+        }
     }
 }

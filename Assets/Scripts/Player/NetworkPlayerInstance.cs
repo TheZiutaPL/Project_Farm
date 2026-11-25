@@ -43,5 +43,6 @@ public class NetworkPlayerInstance : NetworkBehaviour
             return;
 
         OnOwnerInstanceUnassigned?.Invoke(this);
+        OwnerInstance = null;
     }
 }
