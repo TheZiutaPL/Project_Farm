@@ -20,6 +20,11 @@ namespace UI.Mobile
                 OnAssignedPlayer(NetworkPlayerInstance.OwnerInstance);
         }
 
+        private void OnEnable()
+        {
+            Refresh();
+        }
+
         private void OnDestroy()
         {
             NetworkPlayerInstance.OnOwnerInstanceAssigned -= OnAssignedPlayer;
@@ -29,11 +34,12 @@ namespace UI.Mobile
                 OnUnassignePlayer(NetworkPlayerInstance.OwnerInstance);
         }
 
-        public void Refresh()
+        public virtual void Refresh()
         {
             bool isActive = IsActive();
+            Debug.Log(gameObject.name + " " + isActive);
 
-            canvasGroup.alpha = isActive ? 1 : .6f;
+            canvasGroup.alpha = isActive ? 1 : .45f;
 
             canvasGroup.interactable = isActive;
             canvasGroup.blocksRaycasts = isActive;

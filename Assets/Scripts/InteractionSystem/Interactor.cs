@@ -34,6 +34,7 @@ namespace InteractionSystem
             if (!UtilityMethods.IsInterfaceValid(targetable))
             {
                 currentTargetable = null;
+                currentInteractable = null;
                 OnTargetChanged?.Invoke(null);
                 return;
             }
