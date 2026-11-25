@@ -89,7 +89,7 @@ namespace RuntimeGrid
             if (!TryGetRuntimeCell(cellPosition, out RuntimeCell cell))
                 return;
 
-            item.GetItemUseAction()?.Invoke(networkPlayerInstance, cell);
+            item.ItemUseServerAction(networkPlayerInstance, cell);
         }
 
         private void OnDrawGizmos()

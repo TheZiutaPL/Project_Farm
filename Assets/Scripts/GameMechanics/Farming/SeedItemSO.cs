@@ -10,27 +10,22 @@ namespace GameMechanics.Farming
     {
         [SerializeField] public PlantSO plant;
 
-        public override Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction()
+        public override void ItemUseServerAction(NetworkPlayerInstance player, RuntimeCell cell)
         {
-            Action<NetworkPlayerInstance, RuntimeCell> action =  base.GetItemUseAction();
+            base.ItemUseServerAction(player, cell);
 
-            action += (player, cell) =>
-            {
-                if (cell.IsEmpty)
-                    return;
+            if (cell.IsEmpty)
+                return;
 
-                if (cell.GridContent is not FarmGridContent farm)
-                    return;
+            if (cell.GridContent is not FarmGridContent farm)
+                return;
 
-                if (!farm.CanPlant)
-                    return;
+            if (!farm.CanPlant)
+                return;
 
-                farm.SetPlantRpc(plant.PlantID);
+            farm.SetPlantRpc(plant.PlantID);
 
-                player.Inventory.RemoveItem(ItemID);
-            };
-
-            return action;
+            player.Inventory.RemoveItemWithSelectedPriority(ItemID);
         }
     }
 }

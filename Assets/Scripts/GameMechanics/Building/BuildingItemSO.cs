@@ -11,25 +11,20 @@ namespace GameMechanics.Building
         [SerializeField] private GridContent buildingObject;
         [SerializeField] private bool removeItemOnUse = true;
 
-        public override Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction()
+        public override void ItemUseServerAction(NetworkPlayerInstance player, RuntimeCell cell)
         {
-            Action<NetworkPlayerInstance, RuntimeCell> action = base.GetItemUseAction();
+            base.ItemUseServerAction(player, cell);
 
-            action += (player, cell) =>
-            {
-                if (!cell.IsEmpty)
-                    return;
+            if (!cell.IsEmpty)
+                return;
 
-                GridContent building = Instantiate(buildingObject, RuntimeGridInstance.Instance.CellToWorldPosition(cell.CellPosition), Quaternion.identity);
-                building.NetworkObject.Spawn(true);
+            GridContent building = Instantiate(buildingObject, RuntimeGridInstance.Instance.CellToWorldPosition(cell.CellPosition), Quaternion.identity);
+            building.NetworkObject.Spawn(true);
 
-                building.BindToGridRpc(cell.CellPosition);
+            building.BindToGridRpc(cell.CellPosition);
 
-                if (removeItemOnUse)
-                    player.Inventory.RemoveItem(ItemID);
-            };
-
-            return action;
+            if (removeItemOnUse)
+                player.Inventory.RemoveItemWithSelectedPriority(ItemID);
         }
     }
 }

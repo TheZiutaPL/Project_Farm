@@ -8,22 +8,17 @@ namespace GameMechanics.Farming
     [CreateAssetMenu(menuName = "Items/WateringItem")]
     public class WateringItemSO : InventoryItemSO
     {
-        public override Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction()
+        public override void ItemUseServerAction(NetworkPlayerInstance player, RuntimeCell cell)
         {
-            Action<NetworkPlayerInstance, RuntimeCell> action = base.GetItemUseAction();
+            base.ItemUseServerAction(player, cell);
 
-            action += (player, cell) =>
-            {
-                if (cell.IsEmpty)
-                    return;
+            if (cell.IsEmpty)
+                return;
 
-                if (cell.GridContent is not FarmGridContent farm)
-                    return;
+            if (cell.GridContent is not FarmGridContent farm)
+                return;
 
-                farm.WaterFarmRpc();
-            };
-
-            return action;
+            farm.WaterFarmRpc();
         }
     }
 }

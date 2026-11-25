@@ -72,7 +72,9 @@ namespace InventorySystem
         public Action<InventoryItemSO> OnItemAdded;
         public Action<InventoryItemSO> OnItemRemoved;
 
-        public int SelectedSlotIndex { get; private set; }
+        public int SelectedSlotIndex => selectedSlotIndex.Value;
+        private NetworkVariable<int> selectedSlotIndex = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Owner);
+
         public Action<int> OnSelectedSlotIndexChanged;
 
         public InventoryItemSO GetSelectedItem() => GetItemAtSlot(SelectedSlotIndex);
@@ -81,15 +83,20 @@ namespace InventorySystem
         {
             newSelectedSlotIndex = (InventorySize + newSelectedSlotIndex) % InventorySize;
 
-            SelectedSlotIndex = newSelectedSlotIndex;
-            OnSelectedSlotIndexChanged?.Invoke(SelectedSlotIndex);
+            selectedSlotIndex.Value = newSelectedSlotIndex;
         }
         public void MoveSelectedSlotIndexToLeft() => ChangeSelectedSlotIndex(SelectedSlotIndex - 1);
         public void MoveSelectedSlotIndexToRight() => ChangeSelectedSlotIndex(SelectedSlotIndex + 1);
 
+        private void OnSelectedSlotChanged(int previousValue, int newValue)
+        {
+            OnSelectedSlotIndexChanged?.Invoke(SelectedSlotIndex);
+        }
+
         public override void OnNetworkSpawn()
         {
             inventory.OnListChanged += OnInventoryChanged;
+            selectedSlotIndex.OnValueChanged += OnSelectedSlotChanged;
 
             if (IsOwner)
             {
@@ -103,6 +110,7 @@ namespace InventorySystem
         public override void OnNetworkDespawn()
         {
             inventory.OnListChanged -= OnInventoryChanged;
+            selectedSlotIndex.OnValueChanged -= OnSelectedSlotChanged;
 
             if (IsOwner)
             {
@@ -204,6 +212,15 @@ namespace InventorySystem
             }
 
             return false;
+        }
+
+        public bool RemoveItemWithSelectedPriority(int itemID)
+        {
+            InventoryItemSO selectedItem = GetSelectedItem();
+            if (selectedItem != null && selectedItem.ItemID == itemID)
+                return RemoveItemAtSlot(SelectedSlotIndex);
+
+            return RemoveItem(itemID);
         }
         #endregion
 

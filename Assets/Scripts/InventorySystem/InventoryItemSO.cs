@@ -21,9 +21,9 @@ namespace InventorySystem
             RuntimeGridInstance.Instance.UseItemOnGridRpc(cellPosition, ItemID);
         }
 
-        public virtual Action<NetworkPlayerInstance, RuntimeCell> GetItemUseAction() => (player, cell) =>
+        public virtual void ItemUseServerAction(NetworkPlayerInstance player, RuntimeCell cell)
         {
             Debug.Log($"Used item {ItemName} on cell {cell.CellPosition}");
-        };
+        }
     }
 }
