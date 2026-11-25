@@ -89,6 +89,9 @@ namespace InventorySystem.UI
         {
             NetworkPlayerInstance.OnOwnerInstanceAssigned -= OnAssigned;
             NetworkPlayerInstance.OnOwnerInstanceUnassigned -= OnUnassigned;
+
+            if (NetworkPlayerInstance.IsOwnerAssigned)
+                OnUnassigned(NetworkPlayerInstance.OwnerInstance);
         }
     }
 }

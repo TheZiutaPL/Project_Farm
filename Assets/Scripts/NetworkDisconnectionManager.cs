@@ -18,12 +18,29 @@ public class NetworkDisconnectionManager : NetworkBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (NetworkManager.Singleton == null)
+            return;
+
+        NetworkManager.OnTransportFailure += OnTransportFailure;
+    }
+
+    private void OnDisable()
+    {
+        if (NetworkManager.Singleton == null)
+            return;
+
+        NetworkManager.Singleton.OnTransportFailure -= OnTransportFailure;
+    }
+
     public static void LeaveGame()
     {
         if (NetworkManager.Singleton == null)
             return;
 
-        NetworkManager.Singleton.Shutdown();        
+        if(!NetworkManager.Singleton.ShutdownInProgress)
+            NetworkManager.Singleton.Shutdown();        
 
         if (instance != null && NetworkManager.Singleton.IsServer)
         {
@@ -38,6 +55,19 @@ public class NetworkDisconnectionManager : NetworkBehaviour
     {
         // TODO host disconnection scenario (maybe some kind of re-hosting with other players?)
 
+        LeaveToMainMenu();
+    }
+
+    private void OnTransportFailure()
+    {
+        if(NetworkManager.Singleton != null && !NetworkManager.Singleton.ShutdownInProgress)
+            NetworkManager.Singleton.Shutdown();
+
+        LeaveToMainMenu();
+    }
+
+    private void LeaveToMainMenu()
+    {
         SceneManager.LoadScene(0);
     }
 }

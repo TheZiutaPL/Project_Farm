@@ -108,6 +108,7 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: {x: 0, y: 0}
   selectionObjectPrefab: {fileID: 2146859695358864552, guid: fc4e3cc2e06d3a04b81b96af66ce4a27, type: 3}
+  forceMobileInteraction: 0
   interactionRange: 4.5
 --- !u!114 &3934771545083581521
 MonoBehaviour:
@@ -126,6 +127,7 @@ MonoBehaviour:
   movementSpeed: 5
   rotationSpeed: 3
   animator: {fileID: 8887736770980959420}
+  minSpeedToWalkAnimation: 0.05
 --- !u!114 &6720043480466830186
 MonoBehaviour:
   m_ObjectHideFlags: 0

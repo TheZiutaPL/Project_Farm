@@ -1,5 +1,4 @@
-using NUnit.Framework;
-using System.Collections.Generic;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,6 +16,10 @@ namespace InteractionSystem
         private ITargetable currentTargetable;
         private IInteractable currentInteractable;
 
+        public bool IsInteractionPossible => UtilityMethods.IsInterfaceValid(currentInteractable);
+
+        public Action<ITargetable> OnTargetChanged;
+
         private void SetTargetable(ITargetable targetable)
         {
             if (currentTargetable == targetable)
@@ -31,6 +34,8 @@ namespace InteractionSystem
             if (!UtilityMethods.IsInterfaceValid(targetable))
             {
                 currentTargetable = null;
+                currentInteractable = null;
+                OnTargetChanged?.Invoke(null);
                 return;
             }
 
@@ -44,6 +49,7 @@ namespace InteractionSystem
 
             targetable.OnTarget();
             targetable.OnTargetAction?.Invoke(true);
+            OnTargetChanged?.Invoke(targetable);
         }
 
         protected override void OnNetworkPostSpawn()

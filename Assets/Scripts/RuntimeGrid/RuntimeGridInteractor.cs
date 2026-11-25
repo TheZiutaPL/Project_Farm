@@ -10,6 +10,7 @@ namespace RuntimeGrid
         [SerializeField] private GameObject selectionObjectPrefab;
         private Transform selectionObject;
 
+        [SerializeField] private bool forceMobileInteraction;
         [SerializeField] private float interactionRange = 2.5f;
         public bool CanInteractWithCell() => CanInteractWithCell(SelectedCell.Value);
         public bool CanInteractWithCell(Vector2Int cellPosition)
@@ -58,16 +59,25 @@ namespace RuntimeGrid
             if (cam == null)
                 return;
 
-            // Get mouse position
-            Vector2 mousePosition = PlayerInputs.Instance.Inputs.Player.PointerPosition.ReadValue<Vector2>();
+            Vector2Int currentSelected;
+            if (Application.isMobilePlatform || Application.isConsolePlatform || forceMobileInteraction)
+            {
+                // Get cell on which the player stands
+                currentSelected = RuntimeGridInstance.Instance.WorldToCellPosition(transform.position);
+            }
+            else
+            {
+                // Get mouse position
+                Vector2 mousePosition = PlayerInputs.Instance.Inputs.Player.PointerPosition.ReadValue<Vector2>();
 
-            // Get world point position
-            Ray ray = cam.ScreenPointToRay(mousePosition);
-            RuntimeGridInstance.Instance.GetGridPlane().Raycast(ray, out float distance);
-            Vector3 worldPointPosition = ray.GetPoint(distance);
+                // Get world point position
+                Ray ray = cam.ScreenPointToRay(mousePosition);
+                RuntimeGridInstance.Instance.GetGridPlane().Raycast(ray, out float distance);
+                Vector3 worldPointPosition = ray.GetPoint(distance);
 
-            // Calculate cell position
-            Vector2Int currentSelected = RuntimeGridInstance.Instance.WorldToCellPosition(worldPointPosition);
+                // Calculate cell position
+                currentSelected = RuntimeGridInstance.Instance.WorldToCellPosition(worldPointPosition);
+            }
 
             if (currentSelected != SelectedCell.Value)
                 SelectedCell.Value = currentSelected;
