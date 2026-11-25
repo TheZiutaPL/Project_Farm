@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using WebSocketSharp;
 
 public class PlayerNameManager : MonoBehaviour
 {
@@ -60,15 +61,10 @@ public class PlayerNameManager : MonoBehaviour
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(playerName))
-                playerName = GetRandomName();
-            
+            if(string.IsNullOrWhiteSpace(playerName))
+                SetName(playerName);
+
             return playerName;
-        }
-        private set
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                playerName = GetRandomName();
         }
     }
 
@@ -86,20 +82,40 @@ public class PlayerNameManager : MonoBehaviour
             return;
         }
 
-        if(PlayerPrefs.HasKey(PLAYER_NAME_PREFS))
-            PlayerName = PlayerPrefs.GetString(PLAYER_NAME_PREFS);
+        // Set saved name
+        SetName(PlayerPrefs.GetString(PLAYER_NAME_PREFS, string.Empty));
 
         playerNameInputField.text = PlayerName;
 
-        playerNameInputField.onValueChanged.AddListener(OnValueChanged);
+        playerNameInputField.onEndEdit.AddListener(OnEndEdit);
     }
 
-    private void OnValueChanged(string newValue)
+    private void OnEndEdit(string newName)
     {
-        PlayerName = newValue;
+        SetName(newName);
 
-        string newName = PlayerName;
+        newName = PlayerName;
+        if (playerNameInputField.text == newName)
+            return;
+
         playerNameInputField.SetTextWithoutNotify(newName);
-        PlayerPrefs.SetString(PLAYER_NAME_PREFS, newName);
+    }
+
+    public static void SetName(string newName)
+    {
+        newName = newName.Trim();
+
+        if (!string.IsNullOrWhiteSpace(playerName) && playerName == newName)
+            return;
+
+        if(string.IsNullOrWhiteSpace(newName))
+        {
+            newName = GetRandomName();
+            PlayerPrefs.DeleteKey(PLAYER_NAME_PREFS);
+        }
+        else
+            PlayerPrefs.SetString(PLAYER_NAME_PREFS, newName);
+
+        playerName = newName;
     }
 }
