@@ -57,4 +57,6 @@ public class MainMenuUI : MonoBehaviour
 
         currentTab = tab;
     }
+
+    public void ExitGame() => Application.Quit();
 }
