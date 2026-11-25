@@ -417,6 +417,8 @@ namespace GameLobby
             callbacks.KickedFromLobby += OnKickedFromLobby;
             void OnKickedFromLobby()
             {
+                JoinedLobby = null;
+                NetworkManager.Singleton.Shutdown();
                 OnLobbyKicked?.Invoke();
             }
 
@@ -428,21 +430,29 @@ namespace GameLobby
             if (!IsLobbyHost)
                 return;
 
-            foreach (Player player in JoinedLobby.Players)
+            try
             {
-                // Host doesn't need to be ready
-                if (player.Id == joinedLobby.HostId)
-                    continue;
+                foreach (Player player in JoinedLobby.Players)
+                {
+                    // Host doesn't need to be ready
+                    if (player.Id == joinedLobby.HostId)
+                        continue;
 
-                if (!player.Data.TryGetValue(PLAYER_READY_DATA_KEY, out PlayerDataObject data))
-                    return;
+                    if (!player.Data.TryGetValue(PLAYER_READY_DATA_KEY, out PlayerDataObject data))
+                        return;
 
-                if (!bool.TryParse(data.Value, out bool ready) || !ready)
-                    return;
+                    if (!bool.TryParse(data.Value, out bool ready) || !ready)
+                        return;
+                }
+
+                Debug.Log("Starting game...");
+                NetworkManager.Singleton.SceneManager.LoadScene(Constants.GAME_SCENE_NAME, LoadSceneMode.Single);
             }
-
-            Debug.Log("Starting game...");
-            NetworkManager.Singleton.SceneManager.LoadScene(Constants.GAME_SCENE_NAME, LoadSceneMode.Single);
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                Debug.LogWarning("Something went wrong while starting a game");
+            }
         }
 
         private void OnDestroy()
