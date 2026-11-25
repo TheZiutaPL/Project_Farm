@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Carrot_03
       objectReference: {fileID: 0}
+    - target: {fileID: 3090893130872705173, guid: 7e56b779dc036d743aeb9c983d6cf52c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3467638592736330324, guid: 7e56b779dc036d743aeb9c983d6cf52c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -236,6 +240,10 @@ PrefabInstance:
     - target: {fileID: 8388764789938085091, guid: 9902c76133ddec543b56328e5591fa4f, type: 3}
       propertyPath: m_Name
       value: Carrot_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388764789938085091, guid: 9902c76133ddec543b56328e5591fa4f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

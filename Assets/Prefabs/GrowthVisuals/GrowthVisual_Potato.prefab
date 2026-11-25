@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Potato_02
       objectReference: {fileID: 0}
+    - target: {fileID: 4285259217406698314, guid: 9bcddb82f832eed468de94c6dc03fc91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6087547800081654159, guid: 9bcddb82f832eed468de94c6dc03fc91, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -169,6 +173,10 @@ PrefabInstance:
     - target: {fileID: 7224922888186823083, guid: 481a402da32e3094dbb5c87b7c18059d, type: 3}
       propertyPath: m_Name
       value: Potato_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224922888186823083, guid: 481a402da32e3094dbb5c87b7c18059d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

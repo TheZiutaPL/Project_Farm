@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wheat_02
       objectReference: {fileID: 0}
+    - target: {fileID: 855171165617858941, guid: 7e9ff5c5cb473094c8791c23528cad4b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5488024467170252976, guid: 7e9ff5c5cb473094c8791c23528cad4b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -236,6 +240,10 @@ PrefabInstance:
     - target: {fileID: 8025457915167859175, guid: 0caac921be9a52845b29a82573db4212, type: 3}
       propertyPath: m_Name
       value: Wheat_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025457915167859175, guid: 0caac921be9a52845b29a82573db4212, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
