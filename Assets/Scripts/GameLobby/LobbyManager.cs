@@ -117,6 +117,9 @@ namespace GameLobby
 
         public async void CreateLobby(string lobbyName, int maxPlayers, bool isPrivate)
         {
+            if (string.IsNullOrWhiteSpace(lobbyName))
+                lobbyName = $"{PlayerNameManager.PlayerName}'s lobby";
+
             try
             {
                 Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, new CreateLobbyOptions()
