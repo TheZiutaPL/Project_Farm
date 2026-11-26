@@ -8,13 +8,13 @@ using UnityEngine;
 
 public class RelayManager : MonoBehaviour
 {
-    public static async Task<string> CreateRelay()
+    public static async Task<string> CreateRelay(int maxPlayers)
     {
         await Shutdown();
 
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(1);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(Mathf.Max(1, maxPlayers - 1));
 
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 

@@ -129,9 +129,10 @@ namespace GameLobby
                     Player = GetPlayerData(),
 
                     Data = new Dictionary<string, DataObject>()
-                {
-                    { LOBBY_RELAY_CODE_KEY, new DataObject(DataObject.VisibilityOptions.Member, string.Empty) }
-                }
+                    {
+                        { LOBBY_RELAY_CODE_KEY, new DataObject(DataObject.VisibilityOptions.Member, string.Empty) },
+                        { LOBBY_MAX_PLAYERS, new DataObject(DataObject.VisibilityOptions.Public, maxPlayers.ToString()) }
+                    }
                 });
 
                 JoinedLobby = lobby;
@@ -305,13 +306,18 @@ namespace GameLobby
         }
 
         public const string LOBBY_RELAY_CODE_KEY = "_relayCode";
+        public const string LOBBY_MAX_PLAYERS = "_maxPlayers";
         private async Task StartRelayConnectionInLobby()
         {
             try
             {
                 Debug.Log("Starting connection");
 
-                string relayCode = await RelayManager.CreateRelay();
+                int maxPlayers = 2;
+                if (JoinedLobby.Data.TryGetValue(LOBBY_MAX_PLAYERS, out DataObject data) && data != null && int.TryParse(data.Value, out int players))
+                    maxPlayers = players;
+
+                string relayCode = await RelayManager.CreateRelay(maxPlayers);
 
                 _ = UpdateLobby(new UpdateLobbyOptions()
                 {
@@ -389,8 +395,12 @@ namespace GameLobby
                     // If changed host
                     if (changes.HostId.Changed && changes.HostId.Value == AuthenticationService.Instance.PlayerId)
                     {
+                        int maxPlayers = 2;
+                        if (JoinedLobby.Data.TryGetValue(LOBBY_MAX_PLAYERS, out DataObject data) && data != null && int.TryParse(data.Value, out int players))
+                            maxPlayers = players;
+
                         // Start new relay
-                        string relayCode = await RelayManager.CreateRelay();
+                        string relayCode = await RelayManager.CreateRelay(maxPlayers);
 
                         // Update lobby's relay code
                         _ = UpdateLobby(new UpdateLobbyOptions()
