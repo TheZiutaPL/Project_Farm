@@ -1,0 +1,118 @@
+using System;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace InteractionSystem
+{
+    public class Interactor : NetworkBehaviour
+    {
+        [SerializeField] private Transform interactionOriginPoint;
+        [SerializeField] private LayerMask interactionMask;
+        [SerializeField] private float interactionRange = 2;
+
+        private Collider[] colls = new Collider[10];
+
+        private ITargetable currentTargetable;
+        private IInteractable currentInteractable;
+
+        public bool IsInteractionPossible => UtilityMethods.IsInterfaceValid(currentInteractable);
+
+        public Action<ITargetable> OnTargetChanged;
+
+        private void SetTargetable(ITargetable targetable)
+        {
+            if (currentTargetable == targetable)
+                return;
+
+            if (UtilityMethods.IsInterfaceValid(currentTargetable))
+            {
+                currentTargetable.OffTarget();
+                currentTargetable.OnTargetAction?.Invoke(false);
+            }
+
+            if (!UtilityMethods.IsInterfaceValid(targetable))
+            {
+                currentTargetable = null;
+                currentInteractable = null;
+                OnTargetChanged?.Invoke(null);
+                return;
+            }
+
+            currentTargetable = targetable;
+
+            // Get interactable
+            if (targetable is IInteractable interactable)
+                currentInteractable = interactable;
+            else
+                currentInteractable = null;
+
+            targetable.OnTarget();
+            targetable.OnTargetAction?.Invoke(true);
+            OnTargetChanged?.Invoke(targetable);
+        }
+
+        protected override void OnNetworkPostSpawn()
+        {
+            if (!IsOwner)
+                return;
+
+            PlayerInputs.Instance.Inputs.Player.Interact.performed += Interact;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (!IsOwner)
+                return;
+
+            PlayerInputs.Instance.Inputs.Player.Interact.performed -= Interact;
+        }
+
+        private void Update()
+        {
+            if (!IsOwner)
+                return;
+
+            PerformInteractableLookupUpdate();
+        }
+
+        private void PerformInteractableLookupUpdate()
+        {
+            int found = Physics.OverlapSphereNonAlloc(interactionOriginPoint.position, interactionRange, colls, interactionMask);
+
+            // Finds closest targetable
+            ITargetable targetable = null;
+            float smallestDistance = float.MaxValue;
+            for (int i = 0; i < found; i++)
+            {
+                if (!colls[i].TryGetComponent(out ITargetable temp) || !UtilityMethods.IsInterfaceValid(temp))
+                    continue;
+
+                float distance = Vector3.Distance(interactionOriginPoint.position, colls[i].ClosestPoint(interactionOriginPoint.position));
+                if (smallestDistance <= distance)
+                    continue;
+
+                targetable = temp;
+                smallestDistance = distance;
+            }
+
+            SetTargetable(targetable);
+        }
+
+        public void Interact(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            if (!UtilityMethods.IsInterfaceValid(currentInteractable))
+                return;
+
+            currentInteractable.Interact();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(interactionOriginPoint.position, interactionRange);
+        }
+    }
+}

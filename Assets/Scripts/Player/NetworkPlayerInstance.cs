@@ -1,0 +1,48 @@
+using InteractionSystem;
+using InventorySystem;
+using RuntimeGrid;
+using System;
+using Unity.Netcode;
+using UnityEngine;
+
+public class NetworkPlayerInstance : NetworkBehaviour
+{
+    public static NetworkPlayerInstance OwnerInstance { get; private set; }
+
+    public static bool IsOwnerAssigned => OwnerInstance != null;
+    public static Action<NetworkPlayerInstance> OnOwnerInstanceAssigned;
+    public static Action<NetworkPlayerInstance> OnOwnerInstanceUnassigned;
+
+    [field: SerializeField] public PlayerCameraHandler PlayerCameraHandler { get; private set; }
+    [field: SerializeField] public Interactor Interactor { get; private set; }
+    [field: SerializeField] public Inventory Inventory { get; private set; }
+    [field: SerializeField] public RuntimeGridInteractor GridInteractor { get; private set; }
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+            return;
+
+        if (IsOwnerAssigned)
+        {
+            Debug.LogWarning($"There are multiple owner instance objects! Despawning {gameObject.name}!");
+            NetworkObject.Despawn();
+            return;
+        }
+
+        OwnerInstance = this;
+        OnOwnerInstanceAssigned?.Invoke(this);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (!IsOwner)
+            return;
+
+        if (!IsOwnerAssigned || OwnerInstance != this)
+            return;
+
+        OnOwnerInstanceUnassigned?.Invoke(this);
+        OwnerInstance = null;
+    }
+}

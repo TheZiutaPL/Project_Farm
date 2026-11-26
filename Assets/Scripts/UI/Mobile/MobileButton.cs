@@ -1,0 +1,54 @@
+using UnityEngine;
+
+namespace UI.Mobile
+{
+    [RequireComponent(typeof(CanvasGroup))]
+    public abstract class MobileButton : MonoBehaviour
+    {
+        private CanvasGroup canvasGroup;
+
+        protected virtual bool IsActive() => true;
+
+        private void Awake()
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+
+            NetworkPlayerInstance.OnOwnerInstanceAssigned += OnAssignedPlayer;
+            NetworkPlayerInstance.OnOwnerInstanceUnassigned += OnUnassignePlayer;
+
+            if (NetworkPlayerInstance.IsOwnerAssigned)
+                OnAssignedPlayer(NetworkPlayerInstance.OwnerInstance);
+        }
+
+        private void OnEnable()
+        {
+            Refresh();
+        }
+
+        private void OnDestroy()
+        {
+            NetworkPlayerInstance.OnOwnerInstanceAssigned -= OnAssignedPlayer;
+            NetworkPlayerInstance.OnOwnerInstanceUnassigned -= OnUnassignePlayer;
+
+            if(NetworkPlayerInstance.IsOwnerAssigned)
+                OnUnassignePlayer(NetworkPlayerInstance.OwnerInstance);
+        }
+
+        public virtual void Refresh()
+        {
+            bool isActive = IsActive();
+            Debug.Log(gameObject.name + " " + isActive);
+
+            canvasGroup.alpha = isActive ? 1 : .45f;
+
+            canvasGroup.interactable = isActive;
+            canvasGroup.blocksRaycasts = isActive;
+        }
+
+        protected virtual void OnAssignedPlayer(NetworkPlayerInstance player)
+        { }
+
+        protected virtual void OnUnassignePlayer(NetworkPlayerInstance player)
+        { }
+    }
+}

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8271991436597173823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5924731025782676974}
+  - component: {fileID: 2881987275184542094}
+  m_Layer: 0
+  m_Name: Database
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5924731025782676974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8271991436597173823}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2881987275184542094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8271991436597173823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768850d82bd78df4d84a23fbb1aebff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ItemDatabase>k__BackingField:
+    includedData:
+    - {fileID: 11400000, guid: 65e5d9b0cbd5ccb44a4815f3d1e6afc0, type: 2}
+    - {fileID: 11400000, guid: f3713c47d4cde0449aa9f83db23502d4, type: 2}
+    - {fileID: 11400000, guid: 41e1b3ce017356d41bf103f0f9d3d162, type: 2}
+    - {fileID: 11400000, guid: a16bb5f8742c3cf45a200f55ad6df436, type: 2}
+    - {fileID: 11400000, guid: 6a3e830f2e977e043a63edb5841b51a9, type: 2}
+    - {fileID: 11400000, guid: 193639cd5274135499954d79382ac02d, type: 2}
+    - {fileID: 11400000, guid: 8f07366327107aa4d86d724ea0bc7d0a, type: 2}
+    - {fileID: 11400000, guid: 5ec5bd8b502ab3144ba881aaaa9e9cd2, type: 2}
+  <PlantDatabase>k__BackingField:
+    includedData:
+    - {fileID: 11400000, guid: c18d24cf116fd5c4da308add8572d9ed, type: 2}
+    - {fileID: 11400000, guid: a7116a94b6c3d4948975e0cdf6fdef36, type: 2}
+    - {fileID: 11400000, guid: b6147d55f6365e64fb920306a6d667ac, type: 2}

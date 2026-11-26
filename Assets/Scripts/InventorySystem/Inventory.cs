@@ -1,0 +1,287 @@
+using Databases;
+using System;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace InventorySystem
+{
+    public class Inventory : NetworkBehaviour
+    {
+        [field: SerializeField] public int InventorySize { get; private set; } = 5;
+        private NetworkList<int> inventory = new NetworkList<int>
+            (
+            new int[0],
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Server
+            );
+
+        public List<InventoryItemSO> GetItems()
+        {
+            List<InventoryItemSO> items = new List<InventoryItemSO>();
+
+            for (int i = 0; i < inventory.Count; i++ )
+            {
+                if (inventory[i] < 0)
+                    continue;
+
+                InventoryItemSO item = GameDatabase.Instance.ItemDatabase.GetDataByID(inventory[i]);
+
+                if (item == null)
+                    continue;
+
+                items.Add(item);
+            }
+
+            return items;
+        }
+
+        public InventoryItemSO GetItemAtSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= InventorySize)
+            {
+                Debug.LogError("You're trying to access unexisting inventory slot!");
+                return null;
+            }
+
+            if (slotIndex < inventory.Count && inventory[slotIndex] >= 0)
+                return GameDatabase.Instance.ItemDatabase.GetDataByID(inventory[slotIndex]);
+
+            return null;
+        }
+
+        public bool HasEmptySlot()
+        {
+            if (inventory.Count < InventorySize)
+                return true;
+
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] >= 0)
+                    continue;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public Action<(int changedSlot, InventoryItemSO newItem)> OnInventorySlotChange;
+        public Action<Inventory> OnInventoryUpdate;
+        public Action<InventoryItemSO> OnItemAdded;
+        public Action<InventoryItemSO> OnItemRemoved;
+
+        public int SelectedSlotIndex => selectedSlotIndex.Value;
+        private NetworkVariable<int> selectedSlotIndex = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Owner);
+
+        public Action<int> OnSelectedSlotIndexChanged;
+
+        public InventoryItemSO GetSelectedItem() => GetItemAtSlot(SelectedSlotIndex);
+        
+        public void ChangeSelectedSlotIndex(int newSelectedSlotIndex)
+        {
+            newSelectedSlotIndex = (InventorySize + newSelectedSlotIndex) % InventorySize;
+
+            selectedSlotIndex.Value = newSelectedSlotIndex;
+        }
+        public void MoveSelectedSlotIndexToLeft() => ChangeSelectedSlotIndex(SelectedSlotIndex - 1);
+        public void MoveSelectedSlotIndexToRight() => ChangeSelectedSlotIndex(SelectedSlotIndex + 1);
+
+        private void OnSelectedSlotChanged(int previousValue, int newValue)
+        {
+            OnSelectedSlotIndexChanged?.Invoke(SelectedSlotIndex);
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            inventory.OnListChanged += OnInventoryChanged;
+            selectedSlotIndex.OnValueChanged += OnSelectedSlotChanged;
+
+            if (IsOwner)
+            {
+                PlayerInputs.Instance.Inputs.Player.UseItem.performed += UseSelectedItem;
+                PlayerInputs.Instance.Inputs.Player.DropItem.performed += DropSelectedItem;
+
+                PlayerInputs.Instance.Inputs.Player.SlotSelection.performed += ChangeSelectedSlot;
+            }
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            inventory.OnListChanged -= OnInventoryChanged;
+            selectedSlotIndex.OnValueChanged -= OnSelectedSlotChanged;
+
+            if (IsOwner)
+            {
+                PlayerInputs.Instance.Inputs.Player.UseItem.performed -= UseSelectedItem;
+                PlayerInputs.Instance.Inputs.Player.DropItem.performed -= DropSelectedItem;
+
+                PlayerInputs.Instance.Inputs.Player.SlotSelection.performed -= ChangeSelectedSlot;
+            }
+        }
+
+        #region Inventory Management
+        private void OnInventoryChanged(NetworkListEvent<int> changeEvent)
+        {
+            switch (changeEvent.Type)
+            {
+                // When adding an item through List.Add
+                case NetworkListEvent<int>.EventType.Add:
+                    OnItemAdded?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value));
+                    OnInventorySlotChange?.Invoke((changeEvent.Index, GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value)));
+                    break;
+
+                // When changing slot on an existing place
+                case NetworkListEvent<int>.EventType.Value:
+
+                    // Check if the item changed at all
+                    if (changeEvent.Value == changeEvent.PreviousValue || (changeEvent.Value < 0 && changeEvent.PreviousValue < 0))
+                        break;
+
+                    // Checks if item has been added to an empty slot
+                    else if (changeEvent.PreviousValue < 0 && changeEvent.Value >= 0)
+                        OnItemAdded?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value));
+
+                    // Checks if item has been removed from a slot
+                    else if (changeEvent.PreviousValue >= 0 && changeEvent.Value < 0)
+                        OnItemRemoved?.Invoke(GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.PreviousValue));
+
+                    
+                    OnInventorySlotChange?.Invoke((changeEvent.Index, changeEvent.Value < 0 ? null : GameDatabase.Instance.ItemDatabase.GetDataByID(changeEvent.Value)));
+                    break;
+
+                // For more complex operations it is safer to just force update the whole inventory
+                default:
+                    OnInventoryUpdate?.Invoke(this);
+                    break;
+            }
+        }
+
+        public bool AddItem(InventoryItemSO item)
+        {
+            if (item == null)
+                return false;
+
+            return AddItem(item.ItemID);
+        }
+        public bool AddItem(int itemID)
+        {
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] >= 0)
+                    continue;
+
+                inventory[i] = itemID;
+                return true;
+            }
+
+            if(inventory.Count < InventorySize)
+            {
+                inventory.Add(itemID);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveItemAtSlot(int slotIndex)
+        {
+            if (GetItemAtSlot(slotIndex) == null)
+                return true;
+
+            inventory[slotIndex] = -1;
+            return true;
+        }
+        public bool RemoveItem(InventoryItemSO item)
+        {
+            if(item == null)
+                return false;
+
+            return RemoveItem(item.ItemID);
+        }
+        public bool RemoveItem(int itemID)
+        {
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] != itemID)
+                    continue;
+
+                inventory[i] = -1;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveItemWithSelectedPriority(int itemID)
+        {
+            InventoryItemSO selectedItem = GetSelectedItem();
+            if (selectedItem != null && selectedItem.ItemID == itemID)
+                return RemoveItemAtSlot(SelectedSlotIndex);
+
+            return RemoveItem(itemID);
+        }
+        #endregion
+
+        private void ChangeSelectedSlot(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            float axis = ctx.ReadValue<float>();
+
+            if (axis == 0)
+                return;
+
+            if (axis > 0)
+                MoveSelectedSlotIndexToLeft();
+            else
+                MoveSelectedSlotIndexToRight();
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        private void DropItemFromSlotRpc(int slotIndex, RpcParams rpcParams = default)
+        {
+            if (!rpcParams.GetNetworkPlayerInstance(out NetworkPlayerInstance player))
+                return;
+
+            InventoryItemSO item = player.Inventory.GetItemAtSlot(slotIndex);
+            if (item == null)
+                return;
+
+            ItemSpawnManager.SpawnItems(player.transform.position, item);
+            player.Inventory.RemoveItemAtSlot(slotIndex);
+        }
+
+        private void DropSelectedItem(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            if (!IsOwner)
+                return;
+
+            DropItemFromSlotRpc(SelectedSlotIndex);
+        }
+
+        private void UseSelectedItem(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed)
+                return;
+
+            if (!IsOwner)
+                return;
+
+            InventoryItemSO item = GetItemAtSlot(SelectedSlotIndex);
+            if (item == null)
+                return;
+
+            if (!NetworkPlayerInstance.OwnerInstance.GridInteractor.CanInteractWithCell())
+                return;
+
+            Vector2Int cellPosition = NetworkPlayerInstance.OwnerInstance.GridInteractor.SelectedCell.Value;
+            item.UseItem(cellPosition);
+        }
+    }
+}
